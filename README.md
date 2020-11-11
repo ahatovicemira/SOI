@@ -1,8 +1,6 @@
-# SOI
-# Projekat se pokrece na nacin da u cmd-u nadjemo putanju gdje je projekat smjesten i kucamo komandu:
-#    python manage.py runserver
-#
-# Nakon izvrsavanja ove komande treba dobiti sljedeci tekst:
-# Starting development server at http://127.0.0.1:8000/
-# Quit the server with CTRL-BREAK.
-#
+# SOI 
+
+<p>Prvi korak je da uđemo na putanju soi/soi i u cmd-u unesemo komandu "pip install django"</p>
+<p> Drugi korak je da uđemo na putanju soi/ i u cmd-u ukucamo komandu python manage.py runserver </p>
+<p> Server ce se pokrenuti na http://127.0.0.1:8000 </p>
+
