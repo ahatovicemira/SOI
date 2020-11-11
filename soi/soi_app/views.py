@@ -1,7 +1,13 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
-def index(request):
-    return HttpResponse('SISTEM ZA OCJENJIVANJE ISPITA')
-
 # Create your views here.
+def index(request):
+    return render(request, 'soi_app/index.html')
+
+def login(request):
+    return render(request, 'soi_app/login.html')
+
+def register(request):
+    return render(request, 'soi_app/register.html')
+
