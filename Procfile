@@ -1,1 +1,1 @@
-web: python manage.py soi/runserver 0.0.0.0:$PORT --noreload
+web: python soi/manage.py runserver 0.0.0.0:$PORT --noreload
