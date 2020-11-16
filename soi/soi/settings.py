@@ -28,7 +28,7 @@ SECRET_KEY = '0%uptlq=8ji$t^o#^w!lo^mf55qyzw@y#x)h%t6yzt)bkafa&v'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["pmf-soi.herokuapp.com"]
 
 
 # Application definition
