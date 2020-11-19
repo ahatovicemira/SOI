@@ -4,7 +4,7 @@ html {
     margin: 0;
     padding: 0;
     height: 100%;
-    background: #7abecc !important;
+    background: #ffffff !important;
 }
 .user_card {
     position: absolute;
@@ -13,7 +13,7 @@ html {
 
     margin-top: 150px;
     width: 50%;
-    background: #f0e9e0;
+    background: #59b8e8;
 
     display: flex;
     justify-content: center;
@@ -30,7 +30,7 @@ html {
 }
 
 #form-title{
-    color: #5f788a;
+    color: #f0e9e0;
 }
 .login_btn {
     width: 100%;
@@ -45,7 +45,7 @@ html {
     padding: 0 2rem;
 }
 .input-group-text {
-    background: #f7ba5b !important;
+    background: #59b8e8 !important;
     color: white !important;
     border: 0 !important;
     border-radius: 0.25rem 0 0 0.25rem !important;
