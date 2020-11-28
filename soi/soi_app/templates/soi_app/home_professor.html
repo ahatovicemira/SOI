@@ -1,0 +1,31 @@
+{% extends "soi_app/base.html" %}
+{% load static %}
+{% block content %}
+    
+ <head>
+        
+       <link rel="stylesheet" type="text/css" href="{% static 'soi_app/index.css'%}">
+        
+    
+    
+</head>
+
+<body>
+        <main role="main" class="container">
+                <div class="row">
+                  <div class="col-md-8">
+                        <img src="{% static 'soi_app/image/favicon.png' %}"  class="center" >
+                        <p class="naslov">Profesor</p>
+                        <hr>
+                        <p class="naslov1">Univerzitet u Sarajevu</p>
+                        <p class="naslov1">Prirodno-matematički fakultet</p>
+                        <p class="naslov1 ">Odsjek za matematiku</p>
+                  </div>
+                 </div>
+               
+
+                
+        </main>
+</body>
+
+{% endblock content%}
