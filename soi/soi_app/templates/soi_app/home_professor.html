@@ -1,31 +1,62 @@
 {% extends "soi_app/base.html" %}
 {% load static %}
 {% block content %}
-    
+
  <head>
-        
+
        <link rel="stylesheet" type="text/css" href="{% static 'soi_app/index.css'%}">
-        
-    
-    
+     <link rel="stylesheet" type="text/css" href="{% static 'soi_app/home_professor.css'%}">
+
 </head>
 
 <body>
+
         <main role="main" class="container">
                 <div class="row">
-                  <div class="col-md-8">
+                    <div class="sidenav">
+                        <button  class="button" type="button" onclick="showOrHideDivBtn1()">Nova grupa</button>
+                        <button  class="button" type="button" onclick="showOrHideDivBtn2()">Pregled grupa</button>
+
+                    </div>
+
+                  <div class="col-md-8" id="btn-0" style="display: block">
                         <img src="{% static 'soi_app/image/favicon.png' %}"  class="center" >
                         <p class="naslov">Profesor</p>
                         <hr>
                         <p class="naslov1">Univerzitet u Sarajevu</p>
                         <p class="naslov1">Prirodno-matematički fakultet</p>
                         <p class="naslov1 ">Odsjek za matematiku</p>
-                  </div>
-                 </div>
-               
 
-                
+                  </div>
+                  <div class="col-md-8" id="btn-1" style="display: none">
+
+                        <p class="naslov">NOVA  GRUPA</p>
+                        <hr>
+                  </div>
+
+                  <div class="col-md-8" id="btn-2" style="display: none">
+
+                        <p class="naslov">PREGLED GRUPA</p>
+                        <hr>
+
+                  </div>
+
+                 </div>
         </main>
 </body>
 
+<script>
+    function showOrHideDivBtn1() {
+        document.getElementById("btn-0").style.display="none";
+        document.getElementById("btn-1").style.display="inline-block";
+        document.getElementById("btn-2").style.display="none";
+    }
+
+    function showOrHideDivBtn2() {
+        document.getElementById("btn-0").style.display="none";
+        document.getElementById("btn-1").style.display="none";
+        document.getElementById("btn-2").style.display="inline-block";
+    }
+
+</script>
 {% endblock content%}
