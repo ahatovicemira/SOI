@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .forms import UserRegisterForm
-from .models import lkpRole
+from .models import lkpRole, Group, User
 
 
 # Create your views here.
@@ -12,7 +12,11 @@ def index(request):
         if request.method == 'GET':
             role = request.user.role
             if str(role) == "Student":
-                context = {}
+                #current_user = request.user
+                #group = Group.objects.get(users = current_user)
+                #queryset = group.users.all()
+                queryset = Group.objects.filter(users = request.user) # Napisi upit koji izlistava sve grupe za trenutnog usera
+                context = {"object_list": queryset}
                 return render(request, 'soi_app/home_student.html', context)
             elif str(role) == "Professor":
                 context = {}
