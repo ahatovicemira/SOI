@@ -1,9 +1,16 @@
 from django import forms
-from django.contrib.auth.models import User
+from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
-from .models import User, lkpRole
+from .models import User, Group
+
 
 class UserRegisterForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ['username', 'email', 'password1', 'password2',]
+        fields = ['username', 'email', 'password1', 'password2', ]
+
+
+class GroupCreationForm(ModelForm):
+    class Meta:
+        model = Group
+        fields = ['name', 'subject']

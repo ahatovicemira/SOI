@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .forms import UserRegisterForm
+from .forms import UserRegisterForm, GroupCreationForm
 from .models import lkpRole, Group, User
 
 
@@ -12,17 +12,28 @@ def index(request):
         if request.method == 'GET':
             role = request.user.role
             if str(role) == "Student":
-                #current_user = request.user
-                #group = Group.objects.get(users = current_user)
-                #queryset = group.users.all()
-                queryset = Group.objects.filter(users = request.user) # Napisi upit koji izlistava sve grupe za trenutnog usera
+                queryset = Group.objects.filter(users=request.user)
                 context = {"object_list": queryset}
                 return render(request, 'soi_app/home_student.html', context)
             elif str(role) == "Professor":
-                context = {}
+                form = GroupCreationForm()
+                queryset = Group.objects.filter(users=request.user)
+                context = {"object_list": queryset, "form": form}
                 return render(request, 'soi_app/home_professor.html', context)
             else:
                 return render(request, 'soi_app/index.html')
+        if request.method == 'POST':
+            role = request.user.role
+            if str(role) == 'Professor':
+                form = GroupCreationForm(request.POST)
+                if form.is_valid():
+                    form.save()
+                    instance = form.save(commit=False)
+                    instance.users.add(request.user)
+                    instance.save()
+                    group_name = form.cleaned_data.get('name')
+                    messages.success(request, 'Created group ' + group_name)
+                    return redirect('index')
     else:
         print("User is not authenticated!")
         return render(request, 'soi_app/index.html')

@@ -1,6 +1,7 @@
 {% extends "soi_app/base.html" %}
 {% load static %}
 {% block content %}
+{% load crispy_forms_tags %}
 
  <head>
 
@@ -28,16 +29,34 @@
                         <p class="naslov1 ">Odsjek za matematiku</p>
 
                   </div>
-                  <div class="col-md-8" id="btn-1" style="display: none">
 
-                        <p class="naslov">NOVA  GRUPA</p>
+                  <div class="col-md-8" id="btn-1" style="display: none">
+                        <p class="naslov">NEW  GROUP</p>
+                            <div class="content-section">
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <fieldset class="form-group">
+                                        <legend class="border-bottom mb-4">Create group</legend>
+                                        {{ form|crispy }}
+                                    </fieldset>
+                                    <div class="form-group">
+                                        <button class="btn btn-outline-info" type="submit">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
                         <hr>
                   </div>
 
                   <div class="col-md-8" id="btn-2" style="display: none">
 
-                        <p class="naslov">PREGLED GRUPA</p>
-                        <hr>
+                        <h3 class="naslov">PREGLED GRUPA</h3>
+                        {% for instance in object_list %}
+                            <h6>{{instance.name}}</h6>
+                            <p>{{instance.owner_id}}</p>
+                            <p>{{instance.subject_id}}</p>
+
+                            <hr>
+                        {% endfor %}
 
                   </div>
 
