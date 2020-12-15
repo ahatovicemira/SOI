@@ -1,3 +1,7 @@
+import random
+import string
+import datetime
+
 from django import forms
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
@@ -10,7 +14,20 @@ class UserRegisterForm(UserCreationForm):
         fields = ['username', 'email', 'password1', 'password2', ]
 
 
+def id_generator(size=8, chars=string.ascii_uppercase + string.digits):
+    random.seed(datetime.datetime.now())
+    return ''.join(random.choice(chars) for _ in range(size))
+
+
 class GroupCreationForm(ModelForm):
+    code = forms.CharField(initial=id_generator, widget=forms.TextInput(attrs={'readonly': 'readonly'}))
+
     class Meta:
         model = Group
-        fields = ['name', 'subject']
+        fields = ['name', 'subject', 'code']
+
+
+class StudentAddGroupForm(ModelForm):
+    class Meta:
+        model = Group
+        fields = ['code']

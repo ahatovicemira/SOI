@@ -15,8 +15,8 @@
         <main role="main" class="container">
                 <div class="row">
                     <div class="sidenav">
-                        <button  class="button" type="button" onclick="showOrHideDivBtn1()">Nova grupa</button>
-                        <button  class="button" type="button" onclick="showOrHideDivBtn2()">Pregled grupa</button>
+                        <button  class="button" type="button" onclick="showOrHideDivBtn1()">NEW GROUP</button>
+                        <button  class="button" type="button" onclick="showOrHideDivBtn2()">GROUPS</button>
 
                     </div>
 
@@ -47,21 +47,26 @@
                         <hr>
                   </div>
 
-                  <div class="col-md-8" id="btn-2" style="display: none">
+                <div class="col-md-8" id="btn-2" style="display: none">
 
-                        <h3 class="naslov">PREGLED GRUPA</h3>
-                        {% for instance in object_list %}
-                            <h6>{{instance.name}}</h6>
-                            <p>{{instance.owner_id}}</p>
-                            <p>{{instance.subject_id}}</p>
+                       <h3 class="naslov">GROUPS</h3>
 
-                            <hr>
-                        {% endfor %}
+                            <div class="list-group">
 
-                  </div>
+                                {% for instance in object_list %}
+                                <a href="{% url 'group' %}" class="list-group-item list-group-item-action"><h6>{{instance.name}}</h6>{{instance.owner_id}} <span class="badge badge-primary badge-pill">{{instance.code}}</span>
+                                </a>
 
-                 </div>
-        </main>
+                                {% endfor %}
+                            </div>
+                </div>
+
+
+
+
+             </div>
+
+    </main>
 </body>
 
 <script>
@@ -78,4 +83,5 @@
     }
 
 </script>
-{% endblock content%}
+
+{% endblock content %}

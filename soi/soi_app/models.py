@@ -13,13 +13,14 @@ class lkpRole(models.Model):
     def __str__(self):
         return self.name
 
+
 class User(AbstractUser):
     id = models.AutoField(primary_key=True)
     role = models.ForeignKey(
         lkpRole,
         on_delete=models.DO_NOTHING,
         blank=True,
-        null = True,
+        null=True,
         default=None
     )
     last_modified = models.DateTimeField(auto_now=True)
@@ -27,6 +28,7 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
+
 
 class lkpSubject(models.Model):
     id = models.AutoField(primary_key=True)
@@ -38,21 +40,26 @@ class lkpSubject(models.Model):
     def __str__(self):
         return self.name
 
+
 class Group(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=30)
+    name = models.CharField(
+        max_length=30,
+        null=True
+    )
     subject = models.ForeignKey(
         lkpSubject,
         on_delete=models.DO_NOTHING,
         blank=True,
-        null = True,
+        null=True,
         default=None
     )
 
+    code = models.CharField(max_length=8)
     last_modified = models.DateTimeField(auto_now=True)
     date_created = models.DateTimeField(default=timezone.now)
     users = models.ManyToManyField('User', blank=True)
     objects = models.Manager()
+
     def __str__(self):
         return self.name
-

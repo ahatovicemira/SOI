@@ -1,9 +1,10 @@
 {% extends "soi_app/base.html" %}
 {% load static %}
 {% block content %}
-    
+{% load crispy_forms_tags %}
+
  <head>
-        
+
        <link rel="stylesheet" type="text/css" href="{% static 'soi_app/index.css'%}">
      <link rel="stylesheet" type="text/css" href="{% static 'soi_app/home_student.css'%}">
 
@@ -14,8 +15,8 @@
         <main role="main" class="container">
                 <div class="row">
                     <div class="sidenav">
-                        <button  class="button" type="button" onclick="showOrHideDivBtn1()">Grupe</button>
-                        <button  class="button" type="button" onclick="showOrHideDivBtn2()">Dugme 2</button>
+                        <button  class="button" type="button" onclick="showOrHideDivBtn1()">Groups</button>
+                        <button  class="button" type="button" onclick="showOrHideDivBtn2()">New Group</button>
 
                     </div>
 
@@ -30,20 +31,34 @@
                   </div>
                   <div class="col-md-8" id="btn-1" style="display: none">
 
-                        <h3 class="naslov">PREGLED GRUPA</h3>
-                        {% for instance in object_list %}
-                            <h6>{{instance.name}}</h6>
-                            <p>{{instance.owner_id}}</p>
-                            <p>{{instance.subject_id}}</p>
+                       <h3 class="naslov">GROUPS</h3>
 
-                            <hr>
-                        {% endfor %}
+                            <div class="list-group">
 
-                  </div>
+                                {% for instance in object_list %}
+                                <a href="{% url 'group' %}" class="list-group-item list-group-item-action"><h6>{{instance.name}}</h6>{{instance.owner_id}} <span class="badge badge-primary badge-pill">{{instance.code}}</span>
+                                </a>
+
+                                {% endfor %}
+                            </div>
+                </div>
+
 
                   <div class="col-md-8" id="btn-2" style="display: none">
 
-                        <p class="naslov">KLIK 2</p>
+                         <p class="naslov">NEW  GROUP</p>
+                            <div class="content-section">
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <fieldset class="form-group">
+                                        <legend class="border-bottom mb-4">Input Group Code</legend>
+                                        {{ form|crispy }}
+                                    </fieldset>
+                                    <div class="form-group">
+                                        <button class="btn btn-outline-info" type="submit">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
                         <hr>
 
                   </div>
