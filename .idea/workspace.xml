@@ -35,14 +35,13 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3a84d2da-71c8-4327-84a8-ecfdd7725c65" name="Default Changelist" comment="test">
-      <change afterPath="$PROJECT_DIR$/soi/soi_app/migrations/0002_auto_20201215_2217.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/soi/soi_app/templates/soi_app/group.html" afterDir="false" />
+    <list default="true" id="3a84d2da-71c8-4327-84a8-ecfdd7725c65" name="Default Changelist" comment="Group code added.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/soi/soi_app/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/soi/soi_app/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/soi/soi_app/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/soi/soi_app/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/soi/soi_app/templates/soi_app/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/soi/soi_app/templates/soi_app/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/soi/soi_app/templates/soi_app/group.html" beforeDir="false" afterPath="$PROJECT_DIR$/soi/soi_app/templates/soi_app/group.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/soi/soi_app/templates/soi_app/home_professor.html" beforeDir="false" afterPath="$PROJECT_DIR$/soi/soi_app/templates/soi_app/home_professor.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/soi/soi_app/templates/soi_app/home_student.html" beforeDir="false" afterPath="$PROJECT_DIR$/soi/soi_app/templates/soi_app/home_student.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/soi/soi_app/templates/soi_app/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/soi/soi_app/templates/soi_app/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/soi/soi_app/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/soi/soi_app/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/soi/soi_app/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/soi/soi_app/views.py" afterDir="false" />
     </list>
@@ -147,22 +146,22 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="548" y="179" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1605133107727" />
-    <state width="749" height="207" key="GridCell.Tab.0.bottom" timestamp="1608067504375">
+    <state width="749" height="207" key="GridCell.Tab.0.bottom" timestamp="1608157339633">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="749" height="207" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1608067504375" />
-    <state width="749" height="207" key="GridCell.Tab.0.center" timestamp="1608067504375">
+    <state width="749" height="207" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1608157339633" />
+    <state width="749" height="207" key="GridCell.Tab.0.center" timestamp="1608157339633">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="749" height="207" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1608067504375" />
-    <state width="749" height="207" key="GridCell.Tab.0.left" timestamp="1608067504375">
+    <state width="749" height="207" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1608157339633" />
+    <state width="749" height="207" key="GridCell.Tab.0.left" timestamp="1608157339633">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="749" height="207" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1608067504375" />
-    <state width="749" height="207" key="GridCell.Tab.0.right" timestamp="1608067504375">
+    <state width="749" height="207" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1608157339633" />
+    <state width="749" height="207" key="GridCell.Tab.0.right" timestamp="1608157339633">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="749" height="207" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1608067504375" />
+    <state width="749" height="207" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1608157339633" />
     <state width="757" height="261" key="GridCell.Tab.1.bottom" timestamp="1605820810787">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -179,10 +178,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="757" height="261" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1605820810787" />
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1605821871238">
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1608072777304">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1605821871237" />
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1608072777304" />
     <state x="586" y="326" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1605809949285">
       <screen x="0" y="0" width="1536" height="824" />
     </state>

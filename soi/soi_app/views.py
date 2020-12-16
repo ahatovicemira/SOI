@@ -1,11 +1,8 @@
-
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
 from .forms import UserRegisterForm, GroupCreationForm, StudentAddGroupForm
 from .models import lkpRole, Group, User
-
 from django.views.decorators.cache import never_cache
 
 
@@ -50,11 +47,19 @@ def index(request):
             if str(role) == 'Student':
                 form = StudentAddGroupForm(request.POST)
                 if form.is_valid():
-                    form.save()
-                    instance = form.save(commit=False)
-                    instance.users.add(request.user)
-                    instance.save()
-                    return redirect('index')
+                    group_code = form.cleaned_data.get('code')
+                    current_group = Group.objects.filter(code=group_code).first()
+
+                    if current_group is None:
+                        messages.warning(request, 'Group with code ' + group_code + 'does not exist')
+                        return redirect('index')
+                    else:
+                        user = request.user
+                        user.save()
+                        current_group.users.add(user)
+                        current_group.save()
+                        messages.success(request, 'User added to group!')
+                        return redirect('index')
     else:
         print("User is not authenticated!")
         return render(request, 'soi_app/index.html')
@@ -75,5 +80,9 @@ def register(request):
     return render(request, 'soi_app/register.html', context)
 
 
-def group(request):
-    return render(request, 'soi_app/group.html')
+def group(request, code):
+    #TODO: provjeri da li user pripada grupi sa ovim kodom
+    #TODO: ako ne pripada ispisi poruku da ne moze pristupiti toj grupi ili da ne postoji
+    context = {"object_list": code}
+    return render(request, 'soi_app/group.html', context)
+
