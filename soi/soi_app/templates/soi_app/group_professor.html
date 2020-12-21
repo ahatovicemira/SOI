@@ -1,25 +1,101 @@
 {% extends "soi_app/base.html" %}
-{% load crispy_forms_tags %}
 {% load static %}
 {% block content %}
+{% load crispy_forms_tags %}
 
+ <head>
+     <link rel="stylesheet" type="text/css" href="{% static 'soi_app/index.css'%}">
+     <link rel="stylesheet" type="text/css" href="{% static 'soi_app/home_professor.css'%}">
 
-<!DOCTYPE html>
-<html>
-
-
-<head>
-	<link rel="stylesheet" type="text/css" href="{% static 'soi_app/index.css'%}">
-	<title>Grupa</title>
+     <script src = "{% url 'js-catlog' %}"></script>
+     <script src = "{% static '/admin/js/core.js' %}"></script>
+     <link rel = "stylesheet" href="{% static 'admin/css/base.css' %}">
+     <link rel = "stylesheet" href="{% static 'admin/css/widgets.css' %}">
 </head>
+
 <body>
-<h1>zdravo profa ovo je grupa </h1>
+
+        <main role="main" class="container">
+                <div class="row">
+                    <div class="sidenav">
+                        <button  class="button" type="button" onclick="showOrHideDivBtn0()">Add Task</button>
+                        <button  class="button" type="button" onclick="showOrHideDivBtn1()">All Tasks</button>
+                        <button  class="button" type="button" onclick="showOrHideDivBtn2()">Users</button>
+                        <button  class="button" type="button" onclick="showOrHideDivBtn3()">Reports</button>
+
+                    </div>
+
+                  <div class="col-md-8" id="btn-0" style="display: block">
+                        <p class="naslov">NEW  GROUP</p>
+                            <div class="content-section">
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <fieldset class="form-group">
+                                        <legend class="border-bottom mb-4">Create group</legend>
+                                        {{ form.media }}
+                                        {{ form|crispy }}
+                                    </fieldset>
+                                    <div class="form-group">
+                                        <button class="btn btn-outline-info" type="submit">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                        <hr>
+                  </div>
+
+                  <div class="col-md-8" id="btn-1" style="display: none">
+					  <p>All Tasks</p>
+                  </div>
+
+                <div class="col-md-8" id="btn-2" style="display: none">
+					<p>Users</p>
 
 
-<p>{{object_list}}</p>
+                </div>
 
+					<div class="col-md-8" id="btn-3" style="display: none">
+						<p>Reports</p>
+
+
+                </div>
+
+
+
+
+
+             </div>
+
+    </main>
 </body>
 
-</html>
+<script>
+	function showOrHideDivBtn0() {
+        document.getElementById("btn-0").style.display="inline-block";
+        document.getElementById("btn-1").style.display="none";
+        document.getElementById("btn-2").style.display="none";
+        document.getElementById("btn-3").style.display="none";
+    }
+
+    function showOrHideDivBtn1() {
+        document.getElementById("btn-0").style.display="none";
+        document.getElementById("btn-1").style.display="inline-block";
+        document.getElementById("btn-2").style.display="none";
+        document.getElementById("btn-3").style.display="none";
+    }
+
+    function showOrHideDivBtn2() {
+        document.getElementById("btn-0").style.display="none";
+        document.getElementById("btn-1").style.display="none";
+        document.getElementById("btn-2").style.display="inline-block";
+        document.getElementById("btn-3").style.display="none";
+    }
+    function showOrHideDivBtn3() {
+        document.getElementById("btn-0").style.display="none";
+        document.getElementById("btn-1").style.display="none";
+        document.getElementById("btn-2").style.display="none";
+        document.getElementById("btn-3").style.display="inline-block";
+    }
+
+</script>
 
 {% endblock content %}

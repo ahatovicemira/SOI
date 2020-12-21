@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
-from .forms import UserRegisterForm, GroupCreationForm, StudentAddGroupForm
+from .forms import UserRegisterForm, GroupCreationForm, StudentAddGroupForm, TaskCreationForm
 from .models import lkpRole, Group, User
 from django.views.decorators.cache import never_cache
 
@@ -81,14 +81,14 @@ def register(request):
 
 
 def group(request, code):
-
+    form = TaskCreationForm()
     if request.method == 'GET':
         role = request.user.role
 
         if str(role) == 'Professor':
             query = Group.objects.filter(code=code, users=request.user).first()
             if query:
-                context = {"object_list": query}
+                context = {"object_list": query, "form": form}
                 return render(request, 'soi_app/group_professor.html', context)
             else:
                 messages.warning(request, 'Wrong group code')
@@ -103,4 +103,14 @@ def group(request, code):
                 messages.warning(request, 'Wrong group code')
                 return render(request, 'soi_app/index.html')
 
+    if request.method == 'POST':
+        form = TaskCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            instance = form.save(commit=False)
+            instance.group = Group.objects.filter(code=code, users=request.user).first()
+            instance.save()
+            task_name = form.cleaned_data.get('name')
+            messages.success(request, 'Task ' + task_name + ' created!')
+            return render(request, 'soi_app/index.html')
 

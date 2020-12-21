@@ -105,6 +105,7 @@ class TaskInputOutput(models.Model):
     def __str__(self):
         return self.task.__str__()
 
+
 class Results(models.Model):
     user = models.ForeignKey(
         User,

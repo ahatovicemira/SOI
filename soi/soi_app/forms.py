@@ -1,11 +1,12 @@
 import random
 import string
 import datetime
-
 from django import forms
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
-from .models import User, Group
+from django.contrib.admin.widgets import AdminDateWidget, AdminTimeWidget, AdminSplitDateTime
+from .models import User, Group, Task
+
 
 
 class UserRegisterForm(UserCreationForm):
@@ -31,3 +32,21 @@ class StudentAddGroupForm(ModelForm):
     class Meta:
         model = Group
         fields = ['code']
+
+
+class TaskCreationForm(ModelForm):
+
+    visible = forms.SplitDateTimeField(widget=AdminSplitDateTime())
+    started_at = forms.SplitDateTimeField(widget=AdminSplitDateTime())
+    finished_at = forms.SplitDateTimeField(widget=AdminSplitDateTime())
+    #visible = forms.DateField(widget=AdminDateWidget())
+    #started_at = forms.DateField(widget=AdminDateWidget())
+    #finished_at = forms.DateField(widget=AdminDateWidget())
+
+    class Meta:
+        model = Task
+        fields = ['name', 'description',
+                  'started_at',
+                  'finished_at',
+                  'visible',
+                  'group']
