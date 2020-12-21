@@ -81,8 +81,26 @@ def register(request):
 
 
 def group(request, code):
-    #TODO: provjeri da li user pripada grupi sa ovim kodom
-    #TODO: ako ne pripada ispisi poruku da ne moze pristupiti toj grupi ili da ne postoji
-    context = {"object_list": code}
-    return render(request, 'soi_app/group.html', context)
+
+    if request.method == 'GET':
+        role = request.user.role
+
+        if str(role) == 'Professor':
+            query = Group.objects.filter(code=code, users=request.user).first()
+            if query:
+                context = {"object_list": query}
+                return render(request, 'soi_app/group_professor.html', context)
+            else:
+                messages.warning(request, 'Wrong group code')
+                return render(request, 'soi_app/index.html')
+
+        if str(role) == 'Student':
+            query = Group.objects.filter(code=code, users=request.user).first()
+            if query:
+                context = {"object_list": query}
+                return render(request, 'soi_app/group_student.html', context)
+            else:
+                messages.warning(request, 'Wrong group code')
+                return render(request, 'soi_app/index.html')
+
 

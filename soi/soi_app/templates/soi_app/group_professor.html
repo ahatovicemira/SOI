@@ -1,0 +1,25 @@
+{% extends "soi_app/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+
+
+<!DOCTYPE html>
+<html>
+
+
+<head>
+	<link rel="stylesheet" type="text/css" href="{% static 'soi_app/index.css'%}">
+	<title>Grupa</title>
+</head>
+<body>
+<h1>zdravo profa ovo je grupa </h1>
+
+
+<p>{{object_list}}</p>
+
+</body>
+
+</html>
+
+{% endblock content %}

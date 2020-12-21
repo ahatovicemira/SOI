@@ -83,6 +83,9 @@ class Task(models.Model):
     date_created = models.DateTimeField(default=timezone.now)
     objects = models.Manager()
 
+    def __str__(self):
+        return self.name
+
 
 class TaskInputOutput(models.Model):
     id = models.AutoField(primary_key=True)
@@ -99,6 +102,8 @@ class TaskInputOutput(models.Model):
     date_created = models.DateTimeField(default=timezone.now)
     objects = models.Manager()
 
+    def __str__(self):
+        return self.task.__str__()
 
 class Results(models.Model):
     user = models.ForeignKey(
@@ -119,3 +124,6 @@ class Results(models.Model):
     last_modified = models.DateTimeField(auto_now=True)
     date_created = models.DateTimeField(default=timezone.now)
     objects = models.Manager()
+
+    def __str__(self):
+        return self.task.__str__(), self.user.__str__()
