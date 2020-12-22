@@ -1,8 +1,8 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.db.models import F
 from django.shortcuts import render, redirect
 from .forms import UserRegisterForm, GroupCreationForm, StudentAddGroupForm, TaskCreationForm
-from .models import lkpRole, Group, User
+from .models import lkpRole, Group, Task
 from django.views.decorators.cache import never_cache
 
 
@@ -87,8 +87,9 @@ def group(request, code):
 
         if str(role) == 'Professor':
             query = Group.objects.filter(code=code, users=request.user).first()
+            all_tasks = Task.objects.filter(group=query.id)
             if query:
-                context = {"object_list": query, "form": form}
+                context = {"object_list": query, "form": form, "all_tasks": all_tasks}
                 return render(request, 'soi_app/group_professor.html', context)
             else:
                 messages.warning(request, 'Wrong group code')

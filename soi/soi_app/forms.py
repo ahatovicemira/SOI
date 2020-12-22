@@ -39,9 +39,6 @@ class TaskCreationForm(ModelForm):
     visible = forms.SplitDateTimeField(widget=AdminSplitDateTime())
     started_at = forms.SplitDateTimeField(widget=AdminSplitDateTime())
     finished_at = forms.SplitDateTimeField(widget=AdminSplitDateTime())
-    #visible = forms.DateField(widget=AdminDateWidget())
-    #started_at = forms.DateField(widget=AdminDateWidget())
-    #finished_at = forms.DateField(widget=AdminDateWidget())
 
     class Meta:
         model = Task

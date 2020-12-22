@@ -45,24 +45,25 @@
 
                   <div class="col-md-8" id="btn-1" style="display: none">
 					  <p>All Tasks</p>
+                       <h3 class="naslov">ALL TASKS</h3>
+
+                            <div class="list-group">
+                                {% for instance in all_tasks %}
+                                <a href="http://localhost:8000/group/tasks" class="list-group-item list-group-item-action"><h6>{{instance.name}}</h6> <span class="badge badge-primary badge-pill"></span>
+                                </a>
+                                {% endfor %}
+                            </div>
+
                   </div>
 
                 <div class="col-md-8" id="btn-2" style="display: none">
 					<p>Users</p>
-
-
                 </div>
 
 					<div class="col-md-8" id="btn-3" style="display: none">
 						<p>Reports</p>
 
-
-                </div>
-
-
-
-
-
+                    </div>
              </div>
 
     </main>

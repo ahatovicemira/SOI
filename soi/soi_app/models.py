@@ -127,4 +127,5 @@ class Results(models.Model):
     objects = models.Manager()
 
     def __str__(self):
-        return self.task.__str__(), self.user.__str__()
+        return '{} {}'.format(self.task.__str__(), self.user.__str__())
+        #return self.task.__str__(), self.user.__str__()
