@@ -88,8 +88,9 @@ def group(request, code):
         if str(role) == 'Professor':
             query = Group.objects.filter(code=code, users=request.user).first()
             all_tasks = Task.objects.filter(group=query.id)
+            all_users = query.users.all()
             if query:
-                context = {"object_list": query, "form": form, "all_tasks": all_tasks}
+                context = {"object_list": query, "form": form, "all_tasks": all_tasks, "all_users": all_users}
                 return render(request, 'soi_app/group_professor.html', context)
             else:
                 messages.warning(request, 'Wrong group code')
