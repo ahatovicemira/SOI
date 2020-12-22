@@ -3,19 +3,30 @@
 {% load static %}
 {% block content %}
 
-
 <!DOCTYPE html>
 <html>
-
-
 <head>
 	<link rel="stylesheet" type="text/css" href="{% static 'soi_app/index.css'%}">
 	<title>Grupa</title>
 </head>
 <body>
-<h1>zdravo</h1>
+<h1>zdravo ovo je grupa </h1>
+	<p>
+		{{object_list}}
+
+	</p>
+	<main>
+		<div class="form-group">
+        	<button class="btn btn-outline-info" type="submit" onclick="return confirm('Are you sure?')">Leave group</button>
+        	<form method="post">{% csrf_token %}
+    			<p>Are you sure you want to delete "{{ object.name }}"?</p>
+    			<input type="submit" value="Confirm">
+			</form>
+    	</div>
+    </main>
 </body>
 
 </html>
+
 
 {% endblock content %}

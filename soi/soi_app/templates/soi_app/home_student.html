@@ -4,20 +4,16 @@
 {% load crispy_forms_tags %}
 
  <head>
-
-       <link rel="stylesheet" type="text/css" href="{% static 'soi_app/index.css'%}">
+     <link rel="stylesheet" type="text/css" href="{% static 'soi_app/index.css'%}">
      <link rel="stylesheet" type="text/css" href="{% static 'soi_app/home_student.css'%}">
-
 </head>
 
 <body>
-
         <main role="main" class="container">
                 <div class="row">
                     <div class="sidenav">
                         <button  class="button" type="button" onclick="showOrHideDivBtn1()">Groups</button>
                         <button  class="button" type="button" onclick="showOrHideDivBtn2()">New Group</button>
-
                     </div>
 
                   <div class="col-md-8" id="btn-0" style="display: block">
@@ -30,15 +26,11 @@
 
                   </div>
                   <div class="col-md-8" id="btn-1" style="display: none">
-
                        <h3 class="naslov">GROUPS</h3>
-
                             <div class="list-group">
-
                                 {% for instance in object_list %}
-                                <a href="{% url 'group' %}" class="list-group-item list-group-item-action"><h6>{{instance.name}}</h6>{{instance.owner_id}} <span class="badge badge-primary badge-pill">{{instance.code}}</span>
-                                </a>
-
+                                    <a href="http://localhost:8000/group/{{instance.code}}" class="list-group-item list-group-item-action"><h6>{{instance.name}}</h6>{{instance.owner_id}} <span class="badge badge-primary badge-pill">{{instance.code}}</span>
+                                    </a>
                                 {% endfor %}
                             </div>
                 </div>

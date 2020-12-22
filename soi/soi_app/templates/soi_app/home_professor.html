@@ -54,7 +54,9 @@
                             <div class="list-group">
 
                                 {% for instance in object_list %}
-                                <a href="{% url 'group' %}" class="list-group-item list-group-item-action"><h6>{{instance.name}}</h6>{{instance.owner_id}} <span class="badge badge-primary badge-pill">{{instance.code}}</span>
+                                <a href="http://localhost:8000/group/{{instance.code}}" class="list-group-item list-group-item-action"><h6>{{instance.name}}</h6>{{instance.owner_id}} <span class="badge badge-primary badge-pill">{{instance.code}}</span>
+                                  <a href="http://localhost:8000/delete/{{instance.id}}" methods="delete" class="btn btn-danger" id = '{{instance.id}}'>delete</a>
+                                   
                                 </a>
 
                                 {% endfor %}
