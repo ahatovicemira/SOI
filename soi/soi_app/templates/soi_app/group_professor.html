@@ -49,7 +49,7 @@
 
                             <div class="list-group">
                                 {% for instance in all_tasks %}
-                                    <a href="http://localhost:8000/group/{{object_list.code}}/tasks" class="list-group-item list-group-item-action"><h6>{{instance.name}}</h6> <span class="badge badge-primary badge-pill"></span>
+                                    <a href="http://localhost:8000/group/{{object_list.code}}/{{instance.id}}/tasks" class="list-group-item list-group-item-action"><h6>{{instance.name}}</h6> <span class="badge badge-primary badge-pill"></span>
                                     </a>
                                 {% endfor %}
                             </div>

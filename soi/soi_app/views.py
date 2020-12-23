@@ -116,3 +116,18 @@ def group(request, code):
             messages.success(request, 'Task ' + task_name + ' created!')
             return render(request, 'soi_app/index.html')
 
+
+def task(request, code, task_id):
+    form = TaskCreationForm()
+    if request.method == 'GET':
+        role = request.user.role
+        if str(role) == 'Professor':
+            current_task = Task.objects.filter(id=task_id).first()
+
+            # Popuni formu sa vrijednostima iz current_task kverija.
+            form = TaskCreationForm(instance=current_task)
+
+            # Drugi nacin da popunimo samo neke vrijednosti.
+            #form = TaskCreationForm(initial={'name': current_task.name, 'description': current_task.description})
+            context = {'form': form, 'current_task' : current_task}
+            return render(request, 'soi_app/task_professor.html', context)

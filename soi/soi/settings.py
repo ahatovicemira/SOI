@@ -84,13 +84,24 @@ WSGI_APPLICATION = 'soi.wsgi.application'
 #    }
 #}
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.mysql',
+#        'NAME': 'soi_db',
+#        'USER': 'root',
+#        'PASSWORD': '',
+#        'HOST':'localhost',
+#        'PORT':'3306',
+#    }
+#}
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'soi_db',
         'USER': 'root',
-        'PASSWORD': '',
-        'HOST':'localhost',
+        'PASSWORD': 'mth999!!!',
+        'HOST':'195.130.32.38',
         'PORT':'3306',
     }
 }
