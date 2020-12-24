@@ -11,6 +11,7 @@
 	margin-top: 50px;
 }
 
+
 .button{
 	color: #ffffff;
     width: 180px;
@@ -36,3 +37,10 @@
 	color: #cbd5db;
     opacity: 7;
 }
+
+.padding-0{
+    padding-right:0;
+    padding-left:0;
+}
+
+

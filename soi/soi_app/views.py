@@ -1,4 +1,3 @@
-
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from .forms import UserRegisterForm, GroupCreationForm, StudentAddGroupForm
@@ -81,10 +80,9 @@ def register(request):
 
 
 def group(request, code):
-    #TODO: provjeri da li user pripada grupi sa ovim kodom
-    #TODO: ako ne pripada ispisi poruku da ne moze pristupiti toj grupi ili da ne postoji
-    
-    
+    # TODO: provjeri da li user pripada grupi sa ovim kodom
+    # TODO: ako ne pripada ispisi poruku da ne moze pristupiti toj grupi ili da ne postoji
+
     context = {"object_list": code}
     return render(request, 'soi_app/index.html', context)
 
@@ -92,8 +90,22 @@ def group(request, code):
 def delete_group(request, group_id):
     group_id = int(group_id)
     try:
-        group = Group.objects.get(id = group_id)
+        group = Group.objects.get(id=group_id)
     except Group.DoesNotExist:
         return redirect('index')
     group.delete()
     return redirect('index')
+
+
+def update_group(request, group_id):
+    group_id = int(group_id)
+    try:
+        group_sel = Group.objects.get(id=group_id)
+    except Group.DoesNotExist:
+        return redirect('index')
+    # group_form = GroupCreate(request.POST or None, instance = group_sel)
+    group_form = GroupCreationForm(request.POST, instance=group_sel)
+    if group_form.is_valid():
+        group_form.save()
+        return redirect('index')
+    return render(request, 'soi_app/group.html', {'upload_form': group_form})

@@ -51,16 +51,31 @@
 
                        <h3 class="naslov">GROUPS</h3>
 
-                            <div class="list-group">
+                            <div class="list-group"  >
+
 
                                 {% for instance in object_list %}
-                                <a href="http://localhost:8000/group/{{instance.code}}" class="list-group-item list-group-item-action"><h6>{{instance.name}}</h6>{{instance.owner_id}} <span class="badge badge-primary badge-pill">{{instance.code}}</span>
-                                  <a href="http://localhost:8000/delete/{{instance.id}}" methods="delete" class="btn btn-danger" id = '{{instance.id}}'>delete</a>
-                                   
-                                </a>
+                                 <div class="container list-group-item list-group-item-action">
+  <div class="row">
+    <div  class="col-9 padding-0">
+                                      <li style="list-style-type: none;"><a href="http://localhost:8000/group/{{instance.code}}" ><h6>{{instance.name}}</h6>{{instance.owner_id}} <span class="badge badge-primary badge-pill">{{instance.code}}</span></a>
+    </div>
 
+    <div class="col-3 padding-0">
+                               <a href="http://localhost:8000/delete/{{instance.id}}" methods="delete" class="btn btn-primary btn-block" id = '{{instance.id}}' >delete</a>
+                               <a href="http://localhost:8000/group/{{instance.id2}}" methods="update" class="btn btn-primary btn-block" id='{{instance.id2}}' >edit</a>
+    </div>
+  </div>
+
+</div>
+                                 <br>
+<!---->
+
+<!---->
+<!--</li>-->
                                 {% endfor %}
-                            </div>
+                                </div>
+
                 </div>
 
 
