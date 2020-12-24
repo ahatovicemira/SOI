@@ -63,3 +63,69 @@ class Group(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Task(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=30)
+    description = models.TextField()
+    started_at = models.DateTimeField()
+    finished_at = models.DateTimeField()
+    visible = models.DateTimeField()
+    group = models.ForeignKey(
+        Group,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        default=None
+    )
+    last_modified = models.DateTimeField(auto_now=True)
+    date_created = models.DateTimeField(default=timezone.now)
+    objects = models.Manager()
+
+    def __str__(self):
+        return self.name
+
+
+class TaskInputOutput(models.Model):
+    id = models.AutoField(primary_key=True)
+    task = models.ForeignKey(
+        Task,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        default=None
+    )
+    input = models.TextField()
+    output = models.TextField()
+    last_modified = models.DateTimeField(auto_now=True)
+    date_created = models.DateTimeField(default=timezone.now)
+    objects = models.Manager()
+
+    def __str__(self):
+        return self.task.__str__()
+
+
+class Results(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        default=None
+    )
+    task = models.ForeignKey(
+        Task,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        default=None
+    )
+    score = models.FloatField()
+    last_modified = models.DateTimeField(auto_now=True)
+    date_created = models.DateTimeField(default=timezone.now)
+    objects = models.Manager()
+
+    def __str__(self):
+        return '{} {}'.format(self.task.__str__(), self.user.__str__())
+        #return self.task.__str__(), self.user.__str__()

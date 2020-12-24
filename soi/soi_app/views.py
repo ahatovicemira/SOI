@@ -1,7 +1,9 @@
+
 from django.contrib import messages
+from django.db.models import F
 from django.shortcuts import render, redirect
-from .forms import UserRegisterForm, GroupCreationForm, StudentAddGroupForm
-from .models import lkpRole, Group, User
+from .forms import UserRegisterForm, GroupCreationForm, StudentAddGroupForm, TaskCreationForm
+from .models import lkpRole, Group, Task
 from django.views.decorators.cache import never_cache
 
 
@@ -65,7 +67,7 @@ def index(request):
 
 
 def register(request):
-    form = UserRegisterForm(request.POST)
+    form = UserRegisterForm()
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
@@ -80,13 +82,56 @@ def register(request):
 
 
 def group(request, code):
-    # TODO: provjeri da li user pripada grupi sa ovim kodom
-    # TODO: ako ne pripada ispisi poruku da ne moze pristupiti toj grupi ili da ne postoji
+    form = TaskCreationForm()
+    if request.method == 'GET':
+        role = request.user.role
 
-    context = {"object_list": code}
-    return render(request, 'soi_app/index.html', context)
+        if str(role) == 'Professor':
+            query = Group.objects.filter(code=code, users=request.user).first()
+            all_tasks = Task.objects.filter(group=query.id)
+            all_users = query.users.all()
+            if query:
+                context = {"object_list": query, "form": form, "all_tasks": all_tasks, "all_users": all_users}
+                return render(request, 'soi_app/group_professor.html', context)
+            else:
+                messages.warning(request, 'Wrong group code')
+                return render(request, 'soi_app/index.html')
+
+        if str(role) == 'Student':
+            query = Group.objects.filter(code=code, users=request.user).first()
+            if query:
+                context = {"object_list": query}
+                return render(request, 'soi_app/group_student.html', context)
+            else:
+                messages.warning(request, 'Wrong group code')
+                return render(request, 'soi_app/index.html')
+
+    if request.method == 'POST':
+        form = TaskCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            instance = form.save(commit=False)
+            instance.group = Group.objects.filter(code=code, users=request.user).first()
+            instance.save()
+            task_name = form.cleaned_data.get('name')
+            messages.success(request, 'Task ' + task_name + ' created!')
+            return render(request, 'soi_app/index.html')
 
 
+def task(request, code, task_id):
+    form = TaskCreationForm()
+    if request.method == 'GET':
+        role = request.user.role
+        if str(role) == 'Professor':
+            current_task = Task.objects.filter(id=task_id).first()
+
+            # Popuni formu sa vrijednostima iz current_task kverija.
+            form = TaskCreationForm(instance=current_task)
+
+            # Drugi nacin da popunimo samo neke vrijednosti.
+            #form = TaskCreationForm(initial={'name': current_task.name, 'description': current_task.description})
+            context = {'form': form, 'current_task' : current_task}
+            return render(request, 'soi_app/task_professor.html', context)
 def delete_group(request, group_id):
     group_id = int(group_id)
     try:
