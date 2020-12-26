@@ -10,6 +10,7 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('group/<code>', views.group, name='group'),
     path('group/<code>/<task_id>/tasks', views.task, name = 'tasks'),
-    path('jsi18n', JavaScriptCatalog.as_view(), name='js-catlog')
+    path('jsi18n', JavaScriptCatalog.as_view(), name='js-catlog'),
+    path('group/<task_id>/tasks/input_output', views.input_output, name = 'input_output'),
 ]
 

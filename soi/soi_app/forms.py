@@ -5,8 +5,7 @@ from django import forms
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.admin.widgets import AdminDateWidget, AdminTimeWidget, AdminSplitDateTime
-from .models import User, Group, Task
-
+from .models import User, Group, Task, TaskInputOutput
 
 
 class UserRegisterForm(UserCreationForm):
@@ -35,6 +34,9 @@ class StudentAddGroupForm(ModelForm):
 
 
 class TaskCreationForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(TaskCreationForm, self).__init__(*args, **kwargs)
+        self.fields['group'].widget.attrs['disabled'] = True
 
     visible = forms.SplitDateTimeField(widget=AdminSplitDateTime())
     started_at = forms.SplitDateTimeField(widget=AdminSplitDateTime())
@@ -47,3 +49,14 @@ class TaskCreationForm(ModelForm):
                   'finished_at',
                   'visible',
                   'group']
+
+
+class SubmitSolutionForm(forms.Form):
+    solution = forms.CharField(widget=forms.Textarea(attrs={"rows": 20, "cols": 90}))
+
+
+class TaskInputOutputForm(ModelForm):
+
+    class Meta:
+        model = TaskInputOutput
+        fields = ['input', 'output']
