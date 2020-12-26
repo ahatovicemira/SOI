@@ -12,5 +12,6 @@ urlpatterns = [
     path('group/<code>/<task_id>/tasks', views.task, name = 'tasks'),
     path('jsi18n', JavaScriptCatalog.as_view(), name='js-catlog'),
     path('group/<task_id>/tasks/input_output', views.input_output, name = 'input_output'),
+    path('group/tasks/<fun_name>/<task_id>', views.validate_solution, name='validate_solution'),
 ]
 

@@ -1,0 +1,35 @@
+{% extends "soi_app/base.html" %}
+{% load static %}
+{% block content %}
+{% load crispy_forms_tags %}
+
+ <head>
+     <link rel="stylesheet" type="text/css" href="{% static 'soi_app/index.css'%}">
+     <link rel="stylesheet" type="text/css" href="{% static 'soi_app/home_professor.css'%}">
+
+     <script src = "{% url 'js-catlog' %}"></script>
+     <script src = "{% static '/admin/js/core.js' %}"></script>
+     <link rel = "stylesheet" href="{% static 'admin/css/base.css' %}">
+     <link rel = "stylesheet" href="{% static 'admin/css/widgets.css' %}">
+</head>
+
+<body>
+    <div class="row">
+        <div class="sidenav">
+            <button  class="button" type="button">Validate</button>
+        </div>
+    </div>
+    <main role="main" class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <p>
+                    Validate your function! {{submitted_fun_name}} {{task_id}}
+                </p>
+                <hr>
+                <button  class="button" type="button" onclick="location.href='http://localhost:8000/group/tasks/{{submitted_fun_name}}/{{task_id}}'">Validate</button>
+            </div>
+        </div>
+    </main>
+</body>
+
+{% endblock content %}

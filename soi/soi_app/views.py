@@ -6,6 +6,7 @@ from .forms import TaskInputOutputForm
 from .models import lkpRole, Group, Task, TaskInputOutput
 from django.views.decorators.cache import never_cache
 from solutions import *
+import collections
 
 
 # Create your views here.
@@ -162,12 +163,14 @@ def task(request, code, task_id):
                 submitted_fun_name = submitted_fun.split('(')[0].split(' ')[1]
 
                 # TODO istestiraj validate funkciju, drugo rjesenje?
-                if validate(submitted_fun) == 1:
+                if check_syntax(submitted_fun) == 1:
                     f.write('\n')
                     f.write('\n')
                     f.write(submitted_fun)
                     messages.success(request, 'Solution submitted! ' + submitted_fun_name)
-                    return render(request, 'soi_app/index.html')
+                    context = {'submitted_fun_name': submitted_fun_name, 'task_id': task_id}
+                    return render(request, 'soi_app/solution_student.html', context)
+                    # return render(request, 'soi_app/index.html')
                 else:
                     messages.warning(request, 'Syntax error! ' + submitted_fun_name)
                     return render(request, 'soi_app/index.html')
@@ -189,7 +192,7 @@ def task(request, code, task_id):
 
                     # Ovako za inpute koji su int i string, za niz probaj
                     # if item[0] == '['
-                    #for item in input.split(','):
+                    # for item in input.split(','):
                     #    if item[0] == '"':
                     #        my_generic_list.append(str(item))
                     #    else:
@@ -197,7 +200,7 @@ def task(request, code, task_id):
 
                     # Proslijedi ime funkcije i u njemu argumente iz liste
                     fun_name = submitted_fun_name + '(*my_list_int)'
-                    #fun_name = 'fun2_' + str(user_id) + '(*my_list_int)'
+                    # fun_name = 'fun2_' + str(user_id) + '(*my_list_int)'
 
                     # Pokreni funkciju iz solutions.py tako sto eval proslijeidmo njeno ime
                     user_output = eval(fun_name)
@@ -223,6 +226,57 @@ def task(request, code, task_id):
                 context = {'output': user_output}
                 messages.success(request, "Solution submitted!")
                 return render(request, 'soi_app/task_student.html', context)
+
+
+def validate_solution(request, task_id, fun_name):
+    if request.method == 'GET':
+        # messages.success(request, task_id + ' ' + fun_name)
+        input_test = TaskInputOutput.objects.filter(task=task_id).values_list('input', flat=True)
+        user_full_output = []
+        file_name = task_id + fun_name + '.txt'
+        fun_name = fun_name + '(*my_generic_list)'
+        score = 0
+
+        for input in input_test:
+            my_generic_list = []
+            for item in input.split(','):
+                if item[0] == '"':
+                    my_generic_list.append(str(item))
+                else:
+                    my_generic_list.append(int(item))
+
+            user_output = eval(fun_name)
+
+            user_full_output.append(user_output)
+            f = open(file_name, 'a+')
+            f.write('\n')
+            f.write(str(user_output))
+
+        user_full_output.sort()
+        output_test = TaskInputOutput.objects.filter(task=task_id).values_list('output', flat=True)
+        output_test_list = []
+        for output in output_test:
+            if output[0] == '"':
+                output_test_list.append(str(output))
+            else:
+                output_test_list.append(int(output))
+            output_test_list.sort()
+
+            # Provjeravamo da li je output iz baze jednak outputu usera.
+            # Ako jeste zadatak je tacan
+            # TODO: Provjeri sve vrijednosti ako npr. postoje 4 outputa, a user ima 3 tacna dobija 0.75 bodova
+            # TODO: output_test_list moze biti i double ne samo int!
+            # TODO: u solutions.py treba biti omogucen unos importa ?
+            if collections.Counter(user_full_output) == collections.Counter(output_test_list):
+                score = 1
+            else:
+                score = 0
+        if score == 1:
+            messages.success(request, 'Solution accpeted! ' + str(user_full_output))
+            return render(request, 'soi_app/index.html')
+        else:
+            messages.warning(request, 'Solution rejected! ' + str(user_full_output))
+            return render(request, 'soi_app/index.html')
 
 
 def input_output(request, task_id):
@@ -254,7 +308,7 @@ def input_output(request, task_id):
 
 
 # funckija koja provjerava ispravnost sintakse prilikom submita rjesenja zadatka
-def validate(code_string):
+def check_syntax(code_string):
     output = list()
     try:
         tree = compile(code_string, 'mystr', 'exec')
