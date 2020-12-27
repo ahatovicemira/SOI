@@ -1,3 +1,8 @@
+def suma(x,y):
+
+    return x+y
+
+
 
 
 def rjesenje_2(x,y):
