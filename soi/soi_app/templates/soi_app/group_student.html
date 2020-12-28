@@ -8,7 +8,7 @@
 
      <script src = "{% url 'js-catlog' %}"></script>
      <script src = "{% static '/admin/js/core.js' %}"></script>
-     <link rel = "stylesheet" href="{% static 'admin/css/base.css' %}">
+
      <link rel = "stylesheet" href="{% static 'admin/css/widgets.css' %}">
 </head>
 
@@ -21,8 +21,8 @@
                     </div>
 
                   <div class="col-md-8" id="btn-1" style="display: block">
-					  <p>All Tasks</p>
-                       <h3 class="naslov">ALL TASKS</h3>
+					  <p class="naslov">ALL TASKS</p>
+                        <legend class="border-bottom mb-4">List of Tasks </legend>
 
                             <div class="list-group">
                                 {% for instance in all_tasks %}

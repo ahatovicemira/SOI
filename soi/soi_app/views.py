@@ -241,9 +241,14 @@ def validate_solution(request, task_id, fun_name):
             my_generic_list = []
             for item in input.split(','):
                 if item[0] == '"':
-                    my_generic_list.append(str(item))
+                    item_sliced = item[1:len(item) - 1]
+                    my_generic_list.append(str(item_sliced))
+                    # kod iznad treba rijesiti problem da se fji prosliejdi "abc"
+                    # sa navodnicima tj string iz baze koji ima i navodnike
+                    #my_generic_list.append(str(item))
                 else:
                     my_generic_list.append(int(item))
+
 
             user_output = eval(fun_name)
 
@@ -257,9 +262,12 @@ def validate_solution(request, task_id, fun_name):
         output_test_list = []
         for output in output_test:
             if output[0] == '"':
-                output_test_list.append(str(output))
+                output_sliced = output[1:len(output) - 1]
+                output_test_list.append(str(output_sliced))
+                #output_test_list.append(str(output))
             else:
                 output_test_list.append(int(output))
+
             output_test_list.sort()
 
             # Provjeravamo da li je output iz baze jednak outputu usera.
@@ -285,11 +293,9 @@ def input_output(request, task_id):
         role = request.user.role
         if str(role) == 'Professor':
             current_task = Task.objects.filter(id=task_id).first()
-            form = TaskInputOutputForm(request.POST)
-
-            # query = Group.objects.filter(code=code, users=request.user).first()
-
-            context = {'form': form, 'current_task': current_task}
+            query = Group.objects.filter(task=task_id).first()
+             #query = Group.objects.filter(code=code, users=request.user).first()
+            context = {'form': form, 'current_task': current_task, 'group':query}
             return render(request, 'soi_app/input_output.html', context)
 
     if request.method == 'POST':
