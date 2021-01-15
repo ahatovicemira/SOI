@@ -1,12 +1,18 @@
+from time import timezone
+
 from django.contrib import messages
 from django.db.models import F
 from django.shortcuts import render, redirect
 from .forms import UserRegisterForm, GroupCreationForm, StudentAddGroupForm, TaskCreationForm, SubmitSolutionForm
 from .forms import TaskInputOutputForm
-from .models import lkpRole, Group, Task, TaskInputOutput
+from .models import lkpRole, Group, Task, TaskInputOutput, Results
 from django.views.decorators.cache import never_cache
 from solutions import *
+
+from django.http import HttpResponseRedirect
+import datetime
 import collections
+import pytz
 
 
 # Create your views here.
@@ -106,8 +112,65 @@ def group(request, code):
         if str(role) == 'Student':
             current_group = Group.objects.get(code=code)
             all_tasks = Task.objects.filter(group=current_group.id)
+            now = datetime.datetime.now().replace(microsecond=0)
+
+            all_tasks_list = []
+            for current_task in all_tasks:
+                now = datetime.datetime.now()
+                utc = pytz.UTC
+
+                current_task_started_at = current_task.started_at.replace(tzinfo=utc)
+
+                current_task_visible = current_task.visible.replace(tzinfo=utc)
+                current_time = now.replace(tzinfo=utc)
+
+                started_time = datetime.datetime.strptime(str(current_task_started_at), '%Y-%m-%d %H:%M:%S%z')
+                started_time = datetime.time(started_time.hour, started_time.minute, started_time.second)
+
+                visible_time = datetime.datetime.strptime(str(current_task_visible), '%Y-%m-%d %H:%M:%S%z')
+                visible_time = datetime.time(visible_time.hour, visible_time.minute, visible_time.second)
+
+                now_time = datetime.datetime.strptime(str(current_time), '%Y-%m-%d %H:%M:%S.%f%z')
+                now_time = datetime.time(now_time.hour, now_time.minute, now_time.second)
+
+                current_is_bigger_started = is_greater_date_now(current_task_started_at.year,
+                                                                current_task_started_at.month,
+                                                                current_task_started_at.day,
+                                                                current_time.year,
+                                                                current_time.month,
+                                                                current_time.day)
+
+                current_is_bigger_visible = is_greater_date_now(current_task_visible.year,
+                                                                 current_task_visible.month,
+                                                                 current_task_visible.day,
+                                                                 current_time.year,
+                                                                 current_time.month,
+                                                                 current_time.day)
+
+                equal_visible_now = is_equal(current_task_visible.year,
+                                              current_task_visible.month,
+                                              current_task_visible.day,
+                                              current_time.year,
+                                              current_time.month,
+                                              current_time.day)
+
+
+                if (current_is_bigger_started == 1 and current_is_bigger_visible == 0):
+                    if (equal_visible_now == 1):
+                        if (visible_time < now_time):
+                            submit = 0
+                        else:
+                            submit = 1
+                    else:
+                        submit = 1
+                else:
+                    submit = 0
+
+                if (submit == 1): all_tasks_list.append(current_task)
+
+
             if current_group:
-                context = {"current_group": current_group, "all_tasks": all_tasks}
+                context = {"current_group": current_group, "all_tasks": all_tasks_list, "current_time": now}
                 return render(request, 'soi_app/group_student.html', context)
             else:
                 messages.warning(request, 'Wrong group code')
@@ -124,6 +187,19 @@ def group(request, code):
             messages.success(request, 'Task ' + task_name + ' created!')
             return render(request, 'soi_app/index.html')
 
+def is_greater_date_now(year, month, day,  year_now, month_now, day_now):
+
+    if (year < year_now): return  1
+    if (month < month_now ): return  1
+    if (day < day_now): return  1
+
+    return 0
+
+def is_equal(year, month, day, year_now, month_now, day_now):
+
+    if (year == year_now and month == month_now and day == day_now): return  1
+
+    return 0
 
 def task(request, code, task_id):
     # form = TaskCreationForm()
@@ -143,13 +219,62 @@ def task(request, code, task_id):
         if str(role) == 'Student':
             solution_form = SubmitSolutionForm()
             current_task = Task.objects.get(id=task_id)
-            context = {'solution_form': solution_form, 'current_task': current_task}
+
+            now = datetime.datetime.now()
+            utc = pytz.UTC
+            current_task_started_at = current_task.started_at.replace(tzinfo=utc)
+            current_task_finished_at = current_task.finished_at.replace(tzinfo=utc)
+            current_time = now.replace(tzinfo=utc)
+
+            started_time = datetime.datetime.strptime(str(current_task_started_at), '%Y-%m-%d %H:%M:%S%z')
+            started_time = datetime.time(started_time.hour, started_time.minute, started_time.second)
+
+            finished_time = datetime.datetime.strptime(str(current_task_finished_at), '%Y-%m-%d %H:%M:%S%z')
+            finished_time = datetime.time(finished_time.hour, finished_time.minute, finished_time.second)
+
+            now_time = datetime.datetime.strptime(str(current_time), '%Y-%m-%d %H:%M:%S.%f%z')
+            now_time = datetime.time(now_time.hour, now_time.minute, now_time.second)
+
+            current_is_bigger_started = is_greater_date_now(current_task_started_at.year,
+                                                            current_task_started_at.month,
+                                                            current_task_started_at.day,
+                                                            current_time.year,
+                                                            current_time.month,
+                                                            current_time.day)
+
+            current_is_bigger_finished = is_greater_date_now(current_task_finished_at.year,
+                                                             current_task_finished_at.month,
+                                                             current_task_finished_at.day,
+                                                             current_time.year,
+                                                             current_time.month,
+                                                             current_time.day)
+
+            equal_finished_now = is_equal(current_task_finished_at.year,
+                                                             current_task_finished_at.month,
+                                                             current_task_finished_at.day,
+                                                             current_time.year,
+                                                             current_time.month,
+                                                             current_time.day)
+
+            if ( current_is_bigger_started == 1 and current_is_bigger_finished == 0):
+                if (equal_finished_now == 1):
+                    if (finished_time < now_time):
+                        submit = 0
+                    else: submit = 1
+                else:
+                    submit = 1
+            else:
+                submit = 0
+
+
+            context = {'solution_form': solution_form, 'current_task': current_task, "sumbit": submit}
             return render(request, 'soi_app/task_student.html', context)
 
     if request.method == 'POST':
         solution_form = SubmitSolutionForm(request.POST)
         role = request.user.role
         if str(role) == 'Student':
+            #selectovat vrijeme i poredit
             if solution_form.is_valid():
                 # TODO Student mora dat naziv funkcije ovako:
                 # <user_id>_fun dat cemo mu user id ili ispunit formu sa tamplate!
@@ -160,9 +285,14 @@ def task(request, code, task_id):
                 submitted_fun = solution_form.cleaned_data.get('solution')
 
                 # Ime funkcije proslijedi u context
-                submitted_fun_name = submitted_fun.split('(')[0].split(' ')[1]
+                try:
+                    submitted_fun_name = submitted_fun.split('(')[0].split(' ')[1]
+                except Exception as e:
+                    messages.warning(request, 'Syntax error!')
+                    return HttpResponseRedirect(request.path_info)
+                else:
+                    pass
 
-                # TODO istestiraj validate funkciju, drugo rjesenje?
                 if check_syntax(submitted_fun) == 1:
                     f.write('\n')
                     f.write('\n')
@@ -170,10 +300,10 @@ def task(request, code, task_id):
                     messages.success(request, 'Solution submitted! ' + submitted_fun_name)
                     context = {'submitted_fun_name': submitted_fun_name, 'task_id': task_id}
                     return render(request, 'soi_app/solution_student.html', context)
-                    # return render(request, 'soi_app/index.html')
                 else:
                     messages.warning(request, 'Syntax error! ' + submitted_fun_name)
-                    return render(request, 'soi_app/index.html')
+                    return HttpResponseRedirect(request.path_info)
+                    # return render(request, 'soi_app/index.html')
 
                 #### OVAJ DIO IDE NA DRUGU RUTU I IZVRSAVA SE NAKON STO SE KLIKNE VALIDATE####
                 #### ruta treba primati ime nove funkcije dole submitted_fun_name i izvristi je####
@@ -245,10 +375,21 @@ def validate_solution(request, task_id, fun_name):
                     my_generic_list.append(str(item_sliced))
                     # kod iznad treba rijesiti problem da se fji prosliejdi "abc"
                     # sa navodnicima tj string iz baze koji ima i navodnike
-                    #my_generic_list.append(str(item))
+                    # my_generic_list.append(str(item))
+                elif item[0] == '[':
+                    temp_list = []
+                    # [10;20;30] -> 10;20;30
+                    item_sliced = item[1:len(item) - 1]
+                    for list_element in item_sliced.split(';'):
+                        # Provjerava da li je element list int ili string
+                        if list_element[0] == '"':
+                            list_element_sliced = list_element[1:len(list_element) - 1]
+                            temp_list.append(str(list_element_sliced))
+                        else:
+                            temp_list.append(int(list_element))
+                    my_generic_list.append(temp_list)
                 else:
                     my_generic_list.append(int(item))
-
 
             user_output = eval(fun_name)
 
@@ -264,7 +405,7 @@ def validate_solution(request, task_id, fun_name):
             if output[0] == '"':
                 output_sliced = output[1:len(output) - 1]
                 output_test_list.append(str(output_sliced))
-                #output_test_list.append(str(output))
+                # output_test_list.append(str(output))
             else:
                 output_test_list.append(int(output))
 
@@ -279,12 +420,24 @@ def validate_solution(request, task_id, fun_name):
                 score = 1
             else:
                 score = 0
+
+        # Add score into db
+        if not Results.objects.filter(task=task_id, user=request.user).exists():
+            result = Results()
+            result.task = Task.objects.filter(id=task_id).first()
+            result.user = request.user
+            result.score = score
+            result.save()
+        else:
+            current_result = Results.objects.filter(task=task_id, user=request.user).update(score=score)
+
         if score == 1:
             messages.success(request, 'Solution accpeted! ' + str(user_full_output))
             return render(request, 'soi_app/index.html')
         else:
             messages.warning(request, 'Solution rejected! ' + str(user_full_output))
             return render(request, 'soi_app/index.html')
+
 
 
 def input_output(request, task_id):

@@ -14,6 +14,11 @@
 </head>
 
 <body>
+
+<style>
+    body {margin-top: 4rem;}
+</style>
+
 <div class="row">
     <div class="sidenav">
         <button  class="button" type="button" onclick="showOrHideDivBtn0()">Task</button>
@@ -25,12 +30,17 @@
                 <form method="POST">
                     {% csrf_token %}
                     <fieldset class="form-group">
+
                         <legend class="border-bottom mb-4"> {{ current_task.name }} </legend>
                             {{ current_task.description }}
                             {{solution_form.solution}}
                             {{output}}
                         <br/>
+                        {% if sumbit == 1 %}
                             <input type="submit">
+                        {% else %}
+                        <p>time for sumbmitting has ended</p>
+                        {% endif %}
                     </fieldset>
                 </form>
             </div>
@@ -39,6 +49,9 @@
 
 </div>
 </body>
+<style>
+    body {margin-top: 4rem;}
+</style>
 
 <!--<script>
 	function showOrHideDivBtn0() {
