@@ -1,25 +1,51 @@
 {% extends "soi_app/base.html" %}
-{% load crispy_forms_tags %}
 {% load static %}
 {% block content %}
-
-
-<!DOCTYPE html>
-<html>
-
-
+{% load crispy_forms_tags %}
 <head>
-	<link rel="stylesheet" type="text/css" href="{% static 'soi_app/index.css'%}">
-	<title>Grupa</title>
+     <link rel="stylesheet" type="text/css" href="{% static 'soi_app/index.css'%}">
+     <link rel="stylesheet" type="text/css" href="{% static 'soi_app/home_professor.css'%}">
+
+     <script src = "{% url 'js-catlog' %}"></script>
+     <script src = "{% static '/admin/js/core.js' %}"></script>
+
+     <link rel = "stylesheet" href="{% static 'admin/css/widgets.css' %}">
 </head>
+
 <body>
-<h1>zdravo studente ovo je grupa </h1>
 
+        <main role="main" class="container">
+                <div class="row">
+                    <div class="sidenav">
+                        <button  class="button" type="button" onclick="showOrHideDivBtn0()">All Tasks</button>
+                    </div>
 
-<p>{{object_list}}</p>
+                  <div class="col-md-8" id="btn-1" style="display: block">
+					  <p class="naslov">ALL TASKS</p>
+                        <legend class="border-bottom mb-4">List of Tasks </legend>
 
+                            <div class="list-group">
+                                {% for instance in all_tasks %}
+
+                                    <a href="http://localhost:8000/group/{{current_group.code}}/{{instance.id}}/tasks" class="list-group-item list-group-item-action"><h6>{{instance.name}}</h6> <span class="badge badge-primary badge-pill"></span>
+                                    </a>
+
+                                {% endfor %}
+                            </div>
+
+                  </div>
+             </div>
+
+    </main>
 </body>
 
-</html>
+<script>
+	function showOrHideDivBtn0() {
+        document.getElementById("btn-0").style.display="inline-block";
+        document.getElementById("btn-1").style.display="none";
+        document.getElementById("btn-2").style.display="none";
+        document.getElementById("btn-3").style.display="none";
+    }
+</script>
 
 {% endblock content %}

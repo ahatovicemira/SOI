@@ -14,5 +14,7 @@ urlpatterns = [
     path('delete/<group_id>', views.delete_group, name='delete_group'),
     path('update/<group_id>', views.update_group, name='update_group'),
 
+    path('group/<task_id>/tasks/input_output', views.input_output, name = 'input_output'),
+    path('group/tasks/<fun_name>/<task_id>', views.validate_solution, name='validate_solution'),
 ]
 

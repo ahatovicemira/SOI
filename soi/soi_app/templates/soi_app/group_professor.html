@@ -3,13 +3,14 @@
 {% block content %}
 {% load crispy_forms_tags %}
 
- <head>
+<head>
      <link rel="stylesheet" type="text/css" href="{% static 'soi_app/index.css'%}">
      <link rel="stylesheet" type="text/css" href="{% static 'soi_app/home_professor.css'%}">
 
      <script src = "{% url 'js-catlog' %}"></script>
      <script src = "{% static '/admin/js/core.js' %}"></script>
-     <link rel = "stylesheet" href="{% static 'admin/css/base.css' %}">
+
+    <!-- <link rel = "stylesheet" href="{% static 'admin/css/base.css' %}"> -->
      <link rel = "stylesheet" href="{% static 'admin/css/widgets.css' %}">
 </head>
 
@@ -17,7 +18,7 @@
 
         <main role="main" class="container">
                 <div class="row">
-                    <div class="sidenav">
+                    <div class="sidenav" id="sidenav1">
                         <button  class="button" type="button" onclick="showOrHideDivBtn0()">Add Task</button>
                         <button  class="button" type="button" onclick="showOrHideDivBtn1()">All Tasks</button>
                         <button  class="button" type="button" onclick="showOrHideDivBtn2()">Users</button>
@@ -31,7 +32,7 @@
                                 <form method="POST">
                                     {% csrf_token %}
                                     <fieldset class="form-group">
-                                        <legend class="border-bottom mb-4">Create group</legend>
+                                        <legend class="border-bottom mb-4">Create Task</legend>
                                         {{ form.media }}
                                         {{ form|crispy }}
                                     </fieldset>
@@ -44,10 +45,10 @@
                   </div>
 
                   <div class="col-md-8" id="btn-1" style="display: none">
-					  <p>All Tasks</p>
-                       <h3 class="naslov">ALL TASKS</h3>
-
+                       <p class="naslov">ALL TASKS</p>
+                        <legend class="border-bottom mb-4">List of Tasks </legend>
                             <div class="list-group">
+
                                 {% for instance in all_tasks %}
                                     <a href="http://localhost:8000/group/{{object_list.code}}/{{instance.id}}/tasks" class="list-group-item list-group-item-action"><h6>{{instance.name}}</h6> <span class="badge badge-primary badge-pill"></span>
                                     </a>
@@ -57,9 +58,8 @@
                   </div>
 
                 <div class="col-md-8" id="btn-2" style="display: none">
-					<p>Users</p>
-                    <h3 class="naslov">ALL USERS</h3>
-
+                    <p class="naslov">ALL USERS</p>
+                        <legend class="border-bottom mb-4">List of Users </legend>
                             <div class="list-group">
                                 {% for instance in all_users %}
                                     <a href="http://localhost:8000/#" class="list-group-item list-group-item-action"><h6>{{instance.username}}</h6> <span class="badge badge-primary badge-pill"></span>
@@ -69,7 +69,11 @@
                 </div>
 
 					<div class="col-md-8" id="btn-3" style="display: none">
-						<p>Reports</p>
+						<h3 class="naslov">Reports</h3>
+                        <legend class="border-bottom mb-4">List of Reports </legend>
+                            <div class="list-group">
+
+                            </div>
 
                     </div>
              </div>
