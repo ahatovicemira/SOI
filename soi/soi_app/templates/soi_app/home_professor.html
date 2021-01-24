@@ -55,19 +55,21 @@
 
 
                                 {% for instance in object_list %}
+                                <form method="POST">
                                  <div class="container list-group-item list-group-item-action">
-  <div class="row">
-    <div  class="col-9 padding-0">
+                                        <div class="row">
+                                                <div  class="col-9 padding-0">
                                       <li style="list-style-type: none;"><a href="http://localhost:8000/group/{{instance.code}}" ><h6>{{instance.name}}</h6>{{instance.owner_id}} <span class="badge badge-primary badge-pill">{{instance.code}}</span></a>
-    </div>
+                                        </div>
 
-    <div class="col-3 padding-0">
-                               <a href="http://localhost:8000/delete/{{instance.id}}" methods="delete" class="btn btn-primary btn-block" id = '{{instance.id}}' >delete</a>
-                               <a href="http://localhost:8000/group/{{instance.id2}}" methods="update" class="btn btn-primary btn-block" id='{{instance.id2}}' >edit</a>
-    </div>
-  </div>
+                                        <div class="col-3 padding-0">
+                                            <a href="http://localhost:8000/delete/{{instance.id}}" methods="delete" class="btn btn-primary btn-block" id = '{{instance.id}}' >delete</a>
+                                            <a href="http://localhost:8000/update/{{instance.id}}" methods="update" class="btn btn-primary btn-block" id='{{instance.id1}}' >edit</a>
+                                         </div>
+                                        </div>
 
 </div>
+     </form>
                                  <br>
 <!---->
 

@@ -66,6 +66,21 @@ def index(request):
         return render(request, 'soi_app/index.html')
 
 
+def update_group(request, group_id):
+    group_id = int(group_id)
+    try:
+        group_sel = Group.objects.get(id=group_id)
+    except Group.DoesNotExist:
+        return redirect('index')
+    # group_form = GroupCreate(request.POST or None, instance = group_sel)
+    group_form = GroupCreationForm(request.POST, instance=group_sel)
+    if group_form.is_valid():
+        group_form.save()
+        # group_name = group_sel.cleaned_data.get('name')
+        return redirect('index')
+    return render(request, 'soi_app/group.html', {'upload_form': group_form})
+
+
 def register(request):
     form = UserRegisterForm()
     if request.method == 'POST':
@@ -118,6 +133,8 @@ def group(request, code):
             return render(request, 'soi_app/index.html')
 
 
+
+
 def task(request, code, task_id):
     form = TaskCreationForm()
     if request.method == 'GET':
@@ -142,15 +159,4 @@ def delete_group(request, group_id):
     return redirect('index')
 
 
-def update_group(request, group_id):
-    group_id = int(group_id)
-    try:
-        group_sel = Group.objects.get(id=group_id)
-    except Group.DoesNotExist:
-        return redirect('index')
-    # group_form = GroupCreate(request.POST or None, instance = group_sel)
-    group_form = GroupCreationForm(request.POST, instance=group_sel)
-    if group_form.is_valid():
-        group_form.save()
-        return redirect('index')
-    return render(request, 'soi_app/group.html', {'upload_form': group_form})
+
