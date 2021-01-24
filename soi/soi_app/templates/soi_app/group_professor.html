@@ -70,8 +70,12 @@
 
 					<div class="col-md-8" id="btn-3" style="display: none">
 						<h3 class="naslov">Reports</h3>
-                        <legend class="border-bottom mb-4">List of Reports </legend>
+                        <legend class="border-bottom mb-4">List of reports for every student in this group </legend>
                             <div class="list-group">
+                                {% for instance in all_students %}
+                                    <a href="http://localhost:8000/report/{{instance.id}}/{{instance.group_id}}" target="_blank" class="list-group-item list-group-item-action"><h6>{{instance.username}}</h6> <span class="badge badge-primary badge-pill"></span>
+                                    </a>
+                                {% endfor %}
 
                             </div>
 

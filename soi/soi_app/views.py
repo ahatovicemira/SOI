@@ -14,6 +14,12 @@ import datetime
 import collections
 import pytz
 
+from reportlab.platypus import SimpleDocTemplate
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import Table
+from reportlab.platypus import TableStyle
+from reportlab.lib import colors
+
 
 # Create your views here.
 @never_cache
@@ -113,12 +119,20 @@ def group(request, code):
             query = Group.objects.filter(code=code, users=request.user).first()
             all_tasks = Task.objects.filter(group=query.id)
             all_users = query.users.all()
-
+            all_students = []
+            for i in range(len(all_users)):
+                if(all_users[i].role.name == "Student"):
+                    all_students.append({
+                        'username' : all_users[i].username,
+                        'id' : all_users[i].id,
+                        'group_id' : query.id,
+                    })
+            
             query1 = Group.objects.get(code=code)
             form = TaskCreationForm(initial={'group': query1})
 
             if query:
-                context = {"object_list": query, "form": form, "all_tasks": all_tasks, "all_users": all_users}
+                context = {"object_list": query, "form": form, "all_tasks": all_tasks, "all_users": all_users,"all_students" : all_students}
                 return render(request, 'soi_app/group_professor.html', context)
             else:
                 messages.warning(request, 'Wrong group code')
@@ -204,11 +218,16 @@ def group(request, code):
 
 def is_greater_date_now(year, month, day,  year_now, month_now, day_now):
 
-    if (year < year_now): return  1
-    if (month < month_now ): return  1
-    if (day < day_now): return  1
+    # if (year < year_now): return  1
+    # if (month < month_now ): return  1
+    # if (day < day_now): return  1
 
-    return 0
+    # return 0
+
+    if (year < year_now): return  1
+    elif (year == year_now and month < month_now ): return  1
+    elif (year == year_now and month == month_now and day < day_now): return  1
+    else: return 0
 
 def is_equal(year, month, day, year_now, month_now, day_now):
 
@@ -520,3 +539,73 @@ def delete_group(request, group_id):
         return redirect('index')
     group.delete()
     return redirect('index')
+
+def generate_report(request,user_id,group_id):
+    user_id = int(user_id)
+    group_id = int(group_id)
+
+    data = [
+    ['Dedicated Hosting', 'VPS Hosting', 'Sharing Hosting', 'Reseller Hosting' ],
+    ['€200/Month', '€100/Month', '€20/Month', '€50/Month'],
+    ['Free Domain', 'Free Domain', 'Free Domain', 'Free Domain'],
+    ['2GB DDR2', '20GB Disc Space', 'Unlimited Email', 'Unlimited Email']
+    ]
+
+    fileName = 'media/documents/proba.pdf'
+    pdf = SimpleDocTemplate(
+    fileName,
+    pagesize=letter
+    )
+    table = Table(data)
+    style = TableStyle([
+    ('BACKGROUND', (0,0), (3,0), colors.green),
+    ('TEXTCOLOR',(0,0),(-1,0),colors.whitesmoke),
+
+    ('ALIGN',(0,0),(-1,-1),'CENTER'),
+
+    ('FONTNAME', (0,0), (-1,0), 'Courier-Bold'),
+    ('FONTSIZE', (0,0), (-1,0), 14),
+
+    ('BOTTOMPADDING', (0,0), (-1,0), 12),
+
+    ('BACKGROUND',(0,1),(-1,-1),colors.beige),
+    ])
+    table.setStyle(style)
+
+    # 2) Alternate backgroud color
+    rowNumb = len(data)
+    for i in range(1, rowNumb):
+        if i % 2 == 0:
+            bc = colors.burlywood
+        else:
+            bc = colors.beige
+        
+        ts = TableStyle(
+            [('BACKGROUND', (0,i),(-1,i), bc)]
+        )
+        table.setStyle(ts)
+
+    # 3) Add borders
+    ts = TableStyle(
+        [
+        ('BOX',(0,0),(-1,-1),2,colors.black),
+
+        ('LINEBEFORE',(2,1),(2,-1),2,colors.red),
+        ('LINEABOVE',(0,2),(-1,2),2,colors.green),
+
+        ('GRID',(0,1),(-1,-1),2,colors.black),
+        ]
+    )
+    table.setStyle(ts)
+
+    elems = []
+    elems.append(table)
+
+    pdf.build(elems)
+
+    return redirect('media/documents/proba.pdf')
+
+    
+
+
+

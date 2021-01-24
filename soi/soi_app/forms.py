@@ -49,7 +49,7 @@ class TaskCreationForm(ModelForm):
                   'finished_at',
                   'visible',
                   'group',
-                  #'document',
+                  'document',
                   ]
 
 

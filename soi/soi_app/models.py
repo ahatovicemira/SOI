@@ -69,7 +69,7 @@ class Task(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=30)
     description = models.TextField()
-    #document = models.FileField(upload_to='documents/',default='documents/test.pdf')
+    document = models.FileField(upload_to='documents/',default='documents/test.pdf')
     started_at = models.DateTimeField()
     finished_at = models.DateTimeField()
     visible = models.DateTimeField()

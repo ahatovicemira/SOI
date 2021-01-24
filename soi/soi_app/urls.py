@@ -2,6 +2,9 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
 from django.views.i18n import JavaScriptCatalog
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -16,5 +19,9 @@ urlpatterns = [
 
     path('group/<task_id>/tasks/input_output', views.input_output, name = 'input_output'),
     path('group/tasks/<fun_name>/<task_id>', views.validate_solution, name='validate_solution'),
-]
+    path('report/<user_id>/<group_id>', views.generate_report, name='generate_report')
+    
+    
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 
