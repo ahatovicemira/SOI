@@ -84,27 +84,27 @@ WSGI_APPLICATION = 'soi.wsgi.application'
 #    }
 #}
 
-DATABASES = {
-   'default': {
-       'ENGINE': 'django.db.backends.mysql',
-       'NAME': 'soi_db',
-       'USER': 'root',
-       'PASSWORD': '',
-       'HOST':'localhost',
-       'PORT':'3306',
-   }
-}
-
 # DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'soi_db',
-#         'USER': 'root',
-#         'PASSWORD': 'mth999!!!',
-#         'HOST':'195.130.32.38',
-#         'PORT':'3306',
-#     }
+#    'default': {
+#        'ENGINE': 'django.db.backends.mysql',
+#        'NAME': 'soi_db',
+#        'USER': 'root',
+#        'PASSWORD': '',
+#        'HOST':'localhost',
+#        'PORT':'3306',
+#    }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'soi_db',
+        'USER': 'root',
+        'PASSWORD': 'mth999!!!',
+        'HOST':'195.130.32.38',
+        'PORT':'3306',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
