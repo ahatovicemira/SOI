@@ -1,21 +1,54 @@
 {% extends "soi_app/base.html" %}
-{% load crispy_forms_tags %}
 {% load static %}
 {% block content %}
+{% load crispy_forms_tags %}
 
-<!DOCTYPE html>
-<html>
 <head>
-	<link rel="stylesheet" type="text/css" href="{% static 'soi_app/index.css'%}">
-	<title>Grupa</title>
+
+     <link rel="stylesheet" type="text/css" href="{% static 'soi_app/index.css'%}">
+     <link rel="stylesheet" type="text/css" href="{% static 'soi_app/home_professor.css'%}">
+
 </head>
+
 <body>
-<h1>zdravo ovo je grupa </h1>
-	<p>
-		{{object_list}}
-	</p>
+
+        <main role="main" class="container">
+                <div class="row">
+
+                  <div class="col-md-8" >
+                        <p class="naslov">NEW  GROUP</p>
+                            <div class="content-section">
+                                <form  action="group.html" method="POST" >
+                                    {% csrf_token %}
+                                    <fieldset class="form-group">
+                                        <legend class="border-bottom mb-4">{{ group_form.name }}</legend>
+                                        {{ form|crispy }}
+                                    </fieldset>
+                                    <div class="form-group">
+                                        <button class="btn btn-outline-info" type="submit">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                        <hr>
+                  </div>
+             </div>
+
+    </main>
 </body>
-
-</html>
-
 {% endblock content %}
+
+<!--<script>-->
+<!--    function showOrHideDivBtn1() {-->
+<!--        // document.getElementById("btn-0").style.display="none";-->
+<!--        document.getElementById("btn-1").style.display="inline-block";-->
+<!--        // document.getElementById("btn-2").style.display="none";-->
+<!--    }-->
+
+<!--    function showOrHideDivBtn2() {-->
+<!--        // document.getElementById("btn-0").style.display="none";-->
+<!--        document.getElementById("btn-1").style.display="inline-block";-->
+<!--        // document.getElementById("btn-2").style.display="inline-block";-->
+<!--    }-->
+
+<!--</script>-->
+

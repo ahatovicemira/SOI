@@ -48,7 +48,9 @@ class TaskCreationForm(ModelForm):
                   'started_at',
                   'finished_at',
                   'visible',
-                  'group']
+                  'group',
+                  'document',
+                  ]
 
 
 class SubmitSolutionForm(forms.Form):
