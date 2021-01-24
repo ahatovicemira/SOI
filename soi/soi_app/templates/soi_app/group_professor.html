@@ -29,7 +29,7 @@
                   <div class="col-md-8" id="btn-0" style="display: block">
                         <p class="naslov">NEW  GROUP</p>
                             <div class="content-section">
-                                <form method="POST">
+                                <form method="POST" enctype="multipart/form-data">
                                     {% csrf_token %}
                                     <fieldset class="form-group">
                                         <legend class="border-bottom mb-4">Create Task</legend>

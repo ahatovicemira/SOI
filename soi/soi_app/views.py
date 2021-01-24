@@ -192,7 +192,7 @@ def group(request, code):
                 return render(request, 'soi_app/index.html')
 
     if request.method == 'POST':
-        form = TaskCreationForm(request.POST)
+        form = TaskCreationForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             instance = form.save(commit=False)
