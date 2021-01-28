@@ -19,7 +19,10 @@ urlpatterns = [
 
     path('group/<task_id>/tasks/input_output', views.input_output, name = 'input_output'),
     path('group/tasks/<fun_name>/<task_id>', views.validate_solution, name='validate_solution'),
-    path('report/<user_id>/<group_id>', views.generate_report, name='generate_report')
+    path('report/<user_id>/<group_id>/', views.generate_report_user, name='generate_report_user'),
+    path('report/<task_id>/', views.generate_report_task, name='generate_report_task')
+   
+    
     
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

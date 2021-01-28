@@ -19,6 +19,7 @@ from reportlab.lib.pagesizes import letter
 from reportlab.platypus import Table
 from reportlab.platypus import TableStyle
 from reportlab.lib import colors
+from django.http import HttpResponseRedirect
 
 
 # Create your views here.
@@ -540,18 +541,38 @@ def delete_group(request, group_id):
     group.delete()
     return redirect('index')
 
-def generate_report(request,user_id,group_id):
+def generate_report_user(request,user_id,group_id):
     user_id = int(user_id)
     group_id = int(group_id)
 
     data = [
-    ['Dedicated Hosting', 'VPS Hosting', 'Sharing Hosting', 'Reseller Hosting' ],
-    ['€200/Month', '€100/Month', '€20/Month', '€50/Month'],
-    ['Free Domain', 'Free Domain', 'Free Domain', 'Free Domain'],
-    ['2GB DDR2', '20GB Disc Space', 'Unlimited Email', 'Unlimited Email']
+        ['Ime', 'Prezime', 'Naziv grupe', 'Naziv zadatka', 'Uspjesnost' ],
     ]
 
-    fileName = 'media/documents/proba.pdf'
+    results = Results.objects.filter(user_id = user_id)
+    
+    suffix = ""
+    group_name = ""
+    for i in range(len(results)):
+        temp_data = []
+        temp_data.append(results[i].user.first_name)
+        temp_data.append(results[i].user.last_name)
+        temp_data.append(results[i].task.group.name)
+        temp_data.append(results[i].task.name)
+        temp_data.append(results[i].score)
+        data.append(temp_data)
+        group_name = results[i].task.group.name
+        suffix = results[i].user.first_name + "_" + results[i].user.last_name
+
+    parts_of_group_name = group_name.split(" ")
+    if(len(parts_of_group_name) > 0):
+        group_name = ""
+        for i in range(len(parts_of_group_name)):
+            group_name += parts_of_group_name[i]
+
+    suffix += "_"
+    suffix += group_name
+    fileName = 'media/documents/' + suffix + ".pdf"
     pdf = SimpleDocTemplate(
     fileName,
     pagesize=letter
@@ -603,7 +624,100 @@ def generate_report(request,user_id,group_id):
 
     pdf.build(elems)
 
-    return redirect('media/documents/proba.pdf')
+    return HttpResponseRedirect("/"+fileName)
+
+def generate_report_task(request,task_id):
+    task_id = int(task_id)
+
+    titles = ['Ime', 'Prezime', 'Naziv grupe', 'Naziv zadatka', 'Uspjesnost' ]
+    data = [
+        
+    ]
+
+
+    results = Results.objects.filter(task_id = task_id)
+    
+    suffix = ""
+    group_name = ""
+    task_name = ""
+    for i in range(len(results)):
+        temp_data = []
+        temp_data.append(results[i].user.first_name)
+        temp_data.append(results[i].user.last_name)
+        temp_data.append(results[i].task.group.name)
+        temp_data.append(results[i].task.name)
+        temp_data.append(results[i].score)
+        data.append(temp_data)
+        group_name = results[i].task.group.name
+        task_name = results[i].task.name
+
+    data.sort(key=lambda x: x[4], reverse = True)
+    data.insert(0,titles)
+
+    parts_of_group_name = group_name.split(" ")
+    if(len(parts_of_group_name) > 0):
+        group_name = ""
+        for i in range(len(parts_of_group_name)):
+            group_name += parts_of_group_name[i]
+
+    
+    suffix += group_name
+    suffix += "_"
+    suffix += task_name
+
+    fileName = 'media/documents/' + suffix + ".pdf"
+    pdf = SimpleDocTemplate(
+    fileName,
+    pagesize=letter
+    )
+    table = Table(data)
+    style = TableStyle([
+    ('BACKGROUND', (0,0), (3,0), colors.green),
+    ('TEXTCOLOR',(0,0),(-1,0),colors.whitesmoke),
+
+    ('ALIGN',(0,0),(-1,-1),'CENTER'),
+
+    ('FONTNAME', (0,0), (-1,0), 'Courier-Bold'),
+    ('FONTSIZE', (0,0), (-1,0), 14),
+
+    ('BOTTOMPADDING', (0,0), (-1,0), 12),
+
+    ('BACKGROUND',(0,1),(-1,-1),colors.beige),
+    ])
+    table.setStyle(style)
+
+    # 2) Alternate backgroud color
+    rowNumb = len(data)
+    for i in range(1, rowNumb):
+        if i % 2 == 0:
+            bc = colors.burlywood
+        else:
+            bc = colors.beige
+        
+        ts = TableStyle(
+            [('BACKGROUND', (0,i),(-1,i), bc)]
+        )
+        table.setStyle(ts)
+
+    # 3) Add borders
+    ts = TableStyle(
+        [
+        ('BOX',(0,0),(-1,-1),2,colors.black),
+
+        ('LINEBEFORE',(2,1),(2,-1),2,colors.red),
+        ('LINEABOVE',(0,2),(-1,2),2,colors.green),
+
+        ('GRID',(0,1),(-1,-1),2,colors.black),
+        ]
+    )
+    table.setStyle(ts)
+
+    elems = []
+    elems.append(table)
+
+    pdf.build(elems)
+
+    return HttpResponseRedirect("/"+fileName)
 
     
 
