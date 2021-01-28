@@ -110,6 +110,23 @@ def register(request):
     context = {'form': form}
     return render(request, 'soi_app/register.html', context)
 
+def is_greater_equal_date_now(year, month, day,  year_now, month_now, day_now):
+    if (year < year_now): return  1
+    elif (year == year_now and month < month_now ): return  1
+    elif (year == year_now and month == month_now and day < day_now): return  1
+    elif (year == year_now and month == month_now and day == day_now): return  1
+    else: return 0
+
+def is_greater_date_now(year, month, day,  year_now, month_now, day_now):
+    if (year < year_now): return  1
+    elif (year == year_now and month < month_now ): return  1
+    elif (year == year_now and month == month_now and day < day_now): return  1
+    else: return 0
+
+def is_equal(year, month, day, year_now, month_now, day_now):
+
+    if (year == year_now and month == month_now and day == day_now): return  1
+    else: return 0
 
 def group(request, code):
     form = TaskCreationForm()
@@ -163,7 +180,7 @@ def group(request, code):
                 now_time = datetime.datetime.strptime(str(current_time), '%Y-%m-%d %H:%M:%S.%f%z')
                 now_time = datetime.time(now_time.hour, now_time.minute, now_time.second)
 
-                current_is_bigger_started = is_greater_date_now(current_task_started_at.year,
+                current_is_bigger_started = is_greater_equal_date_now(current_task_started_at.year,
                                                                 current_task_started_at.month,
                                                                 current_task_started_at.day,
                                                                 current_time.year,
@@ -184,14 +201,29 @@ def group(request, code):
                                               current_time.month,
                                               current_time.day)
 
+                equal_started_now = is_equal(current_task_started_at.year,
+                                             current_task_started_at.month,
+                                             current_task_started_at.day,
+                                             current_time.year,
+                                             current_time.month,
+                                             current_time.day)
+
 
                 if (current_is_bigger_started == 1 and current_is_bigger_visible == 0):
+                    if (equal_started_now == 1):
+                        if (started_time < now_time):
+                            submit = 1
+                        else:
+                            submit = 0
+
                     if (equal_visible_now == 1):
                         if (visible_time < now_time):
                             submit = 0
                         else:
                             submit = 1
-                    else:
+
+
+                    if (equal_started_now == 0 and equal_visible_now == 0):
                         submit = 1
                 else:
                     submit = 0
@@ -217,24 +249,7 @@ def group(request, code):
             messages.success(request, 'Task ' + task_name + ' created!')
             return render(request, 'soi_app/index.html')
 
-def is_greater_date_now(year, month, day,  year_now, month_now, day_now):
 
-    # if (year < year_now): return  1
-    # if (month < month_now ): return  1
-    # if (day < day_now): return  1
-
-    # return 0
-
-    if (year < year_now): return  1
-    elif (year == year_now and month < month_now ): return  1
-    elif (year == year_now and month == month_now and day < day_now): return  1
-    else: return 0
-
-def is_equal(year, month, day, year_now, month_now, day_now):
-
-    if (year == year_now and month == month_now and day == day_now): return  1
-
-    return 0
 
 
 
@@ -272,7 +287,7 @@ def task(request, code, task_id):
             now_time = datetime.datetime.strptime(str(current_time), '%Y-%m-%d %H:%M:%S.%f%z')
             now_time = datetime.time(now_time.hour, now_time.minute, now_time.second)
 
-            current_is_bigger_started = is_greater_date_now(current_task_started_at.year,
+            current_is_bigger_started = is_greater_equal_date_now(current_task_started_at.year,
                                                             current_task_started_at.month,
                                                             current_task_started_at.day,
                                                             current_time.year,
@@ -293,16 +308,31 @@ def task(request, code, task_id):
                                                              current_time.month,
                                                              current_time.day)
 
-            if ( current_is_bigger_started == 1 and current_is_bigger_finished == 0):
+            equal_started_now = is_equal(current_task_started_at.year,
+                                          current_task_started_at.month,
+                                          current_task_started_at.day,
+                                          current_time.year,
+                                          current_time.month,
+                                          current_time.day)
+
+            if (current_is_bigger_started == 1 and current_is_bigger_finished == 0):
+                if (equal_started_now == 1):
+                    if (started_time < now_time):
+                        submit = 1
+                    else:
+                        submit = 0
+
                 if (equal_finished_now == 1):
                     if (finished_time < now_time):
                         submit = 0
-                    else: submit = 1
-                else:
+                    else:
+                        submit = 1
+
+
+                if (equal_started_now == 0 and equal_finished_now == 0):
                     submit = 1
             else:
                 submit = 0
-
 
             context = {'solution_form': solution_form, 'current_task': current_task, "sumbit": submit}
             return render(request, 'soi_app/task_student.html', context)
