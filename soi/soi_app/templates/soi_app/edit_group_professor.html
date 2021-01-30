@@ -14,35 +14,24 @@
 </head>
 
 <body>
-
-<style>
-    body {margin-top: 4rem;}
-</style>
-
 <div class="row">
     <div class="sidenav">
-        <button  class="button" type="button" onclick="showOrHideDivBtn0()">Task</button>
-       <!-- <button  class="button" type="button" onclick="showOrHideDivBtn1()">Submitted</button> -->
     </div>
     <div class="col-md-8" id="btn-0" style="display: block">
-        <p class="naslov">TASK</p>
+        <p class="naslov">Edit Group</p>
             <div class="content-section">
                 <form method="POST">
                     {% csrf_token %}
                     <fieldset class="form-group">
-
-                        <legend class="border-bottom mb-4"> {{ current_task.name }} </legend>
-                        <a href="http://localhost:8000/media/{{current_task.document}}" target="_blank" >PDF </a><br>
-                            {{ current_task.description }}
-                            {{solution_form.solution}}
-                            {{output}}
-                        <br/>
-                        {% if sumbit == 1 %}
-                            <input type="submit">
-                        {% else %}
-                        <p>time for sumbmitting has ended</p>
-                        {% endif %}
+                        <legend class="border-bottom mb-4"> {{ current_group.name }} </legend>
+                            {{ form.media }}
+                            {{ form|crispy }}
                     </fieldset>
+                    <div class="form-group">
+                        <button class="btn btn-outline-info" type="submit">Submit</button>
+                    </div>
+                   
+        
                 </form>
             </div>
         <hr>
@@ -50,15 +39,18 @@
 
 </div>
 </body>
-<style>
-    body {margin-top: 4rem;}
-</style>
-
-<!--<script>
+<script>
 	function showOrHideDivBtn0() {
         document.getElementById("btn-0").style.display="inline-block";
         document.getElementById("btn-1").style.display="none";
+//window.location.reload();
     }
-</script>-->
 
+    function showOrHideDivBtn1() {
+        document.getElementById("btn-0").style.display="none";
+        document.getElementById("btn-1").style.display="inline-block";
+        //window.location.reload();
+
+    }
+</script>
 {% endblock content %}

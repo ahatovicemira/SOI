@@ -1,0 +1,40 @@
+{% extends "soi_app/base.html" %} {% load static %} {% block content %} {% load crispy_forms_tags %}
+
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'soi_app/index.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'soi_app/home_professor.css'%}">
+
+    <script src="{% url 'js-catlog' %}"></script>
+    <script src="{% static '/admin/js/core.js' %}"></script>
+
+    <link rel="stylesheet" href="{% static 'admin/css/widgets.css' %}">
+</head>
+
+<body>
+    <div class="row">
+        <div class="sidenav">
+
+        </div>
+        <div class="col-md-8" id="btn-0" style="display: block">
+            <p class="naslov">Edit Test Case</p>
+            <div class="content-section">
+                <form method="POST">
+                    {% csrf_token %}
+                    <fieldset class="form-group">
+
+                        {{ form.media }} 
+                        {{ form|crispy }}
+
+                    </fieldset>
+                    <div class="form-group">
+                            <button class="btn btn-outline-info" type="submit">Submit</button>
+                        </div>
+                </form>
+            </div>
+            <hr>
+        </div>
+
+    </div>
+</body>
+
+{% endblock content %}

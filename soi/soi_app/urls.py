@@ -16,7 +16,8 @@ urlpatterns = [
     path('jsi18n', JavaScriptCatalog.as_view(), name='js-catlog'),
     path('delete/<group_id>', views.delete_group, name='delete_group'),
     path('update/<group_id>', views.update_group, name='update_group'),
-
+    path('delete-task/<task_id>', views.delete_task, name='delete_task'),
+    path('update-test-case/<test_case_id>', views.update_test_case, name='update_test_case'),
     path('group/<task_id>/tasks/input_output', views.input_output, name = 'input_output'),
     path('group/tasks/<fun_name>/<task_id>', views.validate_solution, name='validate_solution'),
     path('report/<user_id>/<group_id>/', views.generate_report_user, name='generate_report_user'),

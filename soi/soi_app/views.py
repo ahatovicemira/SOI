@@ -3,7 +3,7 @@ from time import timezone
 from django.contrib import messages
 from django.db.models import F
 from django.shortcuts import render, redirect
-from .forms import UserRegisterForm, GroupCreationForm, StudentAddGroupForm, TaskCreationForm, SubmitSolutionForm
+from .forms import UserRegisterForm, GroupCreationForm, StudentAddGroupForm, TaskCreationForm, SubmitSolutionForm, EditGroupForm
 from .forms import TaskInputOutputForm
 from .models import lkpRole, Group, Task, TaskInputOutput, Results
 from django.views.decorators.cache import never_cache
@@ -83,17 +83,25 @@ def index(request):
 
 def update_group(request, group_id):
     group_id = int(group_id)
-    try:
-        group_sel = Group.objects.get(id=group_id)
-    except Group.DoesNotExist:
-        return redirect('index')
-    # group_form = GroupCreate(request.POST or None, instance = group_sel)
-    group_form = GroupCreationForm(request.POST, instance=group_sel)
-    if group_form.is_valid():
-        group_form.save()
-        # group_name = group_sel.cleaned_data.get('name')
-        return redirect('index')
-    return render(request, 'soi_app/group.html', {'upload_form': group_form})
+
+    if request.method == "GET":
+        current_group = Group.objects.get(id=group_id)
+        form = EditGroupForm(initial = {'name':current_group.name, 'subject':current_group.subject_id, 'code': current_group.code })
+        #form = GroupCreationForm(instance=current_group)
+        context = {'form': form, 'current_group': current_group}
+        return render(request, 'soi_app/edit_group_professor.html', context)
+
+    if request.method == "POST":
+        form = EditGroupForm(request.POST)
+        if form.is_valid():
+            current_group = Group.objects.get(id=group_id)
+            current_group.name = form.cleaned_data.get('name')
+            current_group.save()
+            return redirect('index')
+
+
+
+    
 
 
 def register(request):
@@ -249,6 +257,26 @@ def group(request, code):
             messages.success(request, 'Task ' + task_name + ' created!')
             return render(request, 'soi_app/index.html')
 
+def update_test_case(request,test_case_id):
+    test_case_id = int(test_case_id)
+    print("METOD",request.method)
+    if request.method == "GET":
+        test_case = TaskInputOutput.objects.filter(id = test_case_id).first()
+        form = TaskInputOutputForm(instance=test_case)
+        context = {'form': form}
+        print("FORM: ",form)
+        return render(request, 'soi_app/update_test_case_professor.html', context)
+    if request.method == "POST":
+        form = TaskInputOutputForm(request.POST)
+        if form.is_valid():
+            current_test_case = TaskInputOutput.objects.get(id=test_case_id)
+            current_test_case.input = form.cleaned_data.get('input')
+            current_test_case.output = form.cleaned_data.get('output')
+            # todo 
+            # trenutno u bazi stavi sat ranije, treba prepraviti
+            current_test_case.last_modified = datetime.datetime.now()
+            current_test_case.save()
+            return redirect('index')
 
 
 
@@ -259,13 +287,14 @@ def task(request, code, task_id):
         role = request.user.role
         if str(role) == 'Professor':
             current_task = Task.objects.filter(id=task_id).first()
+            test_cases = TaskInputOutput.objects.filter(task_id = task_id)
 
             # Popuni formu sa vrijednostima iz current_task kverija.
             form = TaskCreationForm(instance=current_task)
 
             # Drugi nacin da popunimo samo neke vrijednosti.
             # form = TaskCreationForm(initial={'name': current_task.name, 'description': current_task.description})
-            context = {'form': form, 'current_task': current_task}
+            context = {'form': form, 'current_task': current_task, 'test_cases': test_cases}
             return render(request, 'soi_app/task_professor.html', context)
 
         if str(role) == 'Student':
@@ -546,19 +575,6 @@ def check_syntax(code_string):
         return 1
 
 
-def update_group(request, group_id):
-    group_id = int(group_id)
-    try:
-        group_sel = Group.objects.get(id=group_id)
-    except Group.DoesNotExist:
-        return redirect('index')
-    # group_form = GroupCreate(request.POST or None, instance = group_sel)
-    group_form = GroupCreationForm(request.POST, instance=group_sel)
-    if group_form.is_valid():
-        group_form.save()
-        # group_name = group_sel.cleaned_data.get('name')
-        return redirect('index')
-    return render(request, 'soi_app/group.html', {'upload_form': group_form})
 
 
 
@@ -569,6 +585,15 @@ def delete_group(request, group_id):
     except Group.DoesNotExist:
         return redirect('index')
     group.delete()
+    return redirect('index')
+
+def delete_task(request, task_id):
+    task_id = int(task_id)
+    try:
+        task = Task.objects.get(id=task_id)
+    except Task.DoesNotExist:
+        return redirect('index')
+    task.delete()
     return redirect('index')
 
 def generate_report_user(request,user_id,group_id):
@@ -748,8 +773,3 @@ def generate_report_task(request,task_id):
     pdf.build(elems)
 
     return HttpResponseRedirect("/"+fileName)
-
-    
-
-
-

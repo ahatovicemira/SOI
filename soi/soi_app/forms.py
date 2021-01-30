@@ -11,7 +11,7 @@ from .models import User, Group, Task, TaskInputOutput
 class UserRegisterForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ['username', 'email', 'password1', 'password2', ]
+        fields = ['username', 'email', 'password1', 'password2', 'first_name', 'last_name' ]
 
 
 def id_generator(size=8, chars=string.ascii_uppercase + string.digits):
@@ -19,8 +19,20 @@ def id_generator(size=8, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
 
+class EditGroupForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(EditGroupForm, self).__init__(*args, **kwargs)
+    
+    class Meta:
+        model = Group
+        fields = ['name','subject','code']
+
+
 class GroupCreationForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(GroupCreationForm, self).__init__(*args, **kwargs)
     code = forms.CharField(initial=id_generator, widget=forms.TextInput(attrs={'readonly': 'readonly'}))
+    
 
     class Meta:
         model = Group
@@ -58,6 +70,8 @@ class SubmitSolutionForm(forms.Form):
 
 
 class TaskInputOutputForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(TaskInputOutputForm, self).__init__(*args, **kwargs)
 
     class Meta:
         model = TaskInputOutput
