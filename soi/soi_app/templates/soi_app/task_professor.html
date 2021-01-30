@@ -17,7 +17,9 @@
 <div class="row">
     <div class="sidenav">
         <button  class="button" type="button" onclick="showOrHideDivBtn0()">Edit Task</button>
+        <button  class="button" type="button" onclick="location.href='http://localhost:8000/delete-task/{{current_task.id}}'">Delete Task</button>
         <button  class="button" type="button" onclick="location.href='http://localhost:8000/group/{{current_task.id}}/tasks/input_output'">Add Solution</button>
+        
         <!--<button  class="button" type="button" onclick="showOrHideDivBtn1()">Add Solution</button>-->
     </div>
     <div class="col-md-8" id="btn-0" style="display: block">
@@ -29,6 +31,9 @@
                         <legend class="border-bottom mb-4"> {{ current_task.name }} </legend>
                             {{ form.media }}
                             {{ form|crispy }}
+                        {% for instance in test_cases %}
+                            <a href="http://localhost:8000/update-test-case/{{instance.id}}" target="_blank"> Test Case </a><br>
+                        {% endfor %}
                     </fieldset>
                 </form>
             </div>
