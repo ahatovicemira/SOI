@@ -634,8 +634,8 @@ def generate_report_user(request,user_id,group_id):
     )
     table = Table(data)
     style = TableStyle([
-    ('BACKGROUND', (0,0), (3,0), colors.green),
-    ('TEXTCOLOR',(0,0),(-1,0),colors.whitesmoke),
+    ('BACKGROUND', (0,0), (4,0), colors.white),
+    ('TEXTCOLOR',(0,0),(-1,0),colors.black),
 
     ('ALIGN',(0,0),(-1,-1),'CENTER'),
 
@@ -643,33 +643,15 @@ def generate_report_user(request,user_id,group_id):
     ('FONTSIZE', (0,0), (-1,0), 14),
 
     ('BOTTOMPADDING', (0,0), (-1,0), 12),
-
-    ('BACKGROUND',(0,1),(-1,-1),colors.beige),
     ])
-    table.setStyle(style)
 
-    # 2) Alternate backgroud color
-    rowNumb = len(data)
-    for i in range(1, rowNumb):
-        if i % 2 == 0:
-            bc = colors.burlywood
-        else:
-            bc = colors.beige
-        
-        ts = TableStyle(
-            [('BACKGROUND', (0,i),(-1,i), bc)]
-        )
-        table.setStyle(ts)
+    table.setStyle(style)
 
     # 3) Add borders
     ts = TableStyle(
         [
         ('BOX',(0,0),(-1,-1),2,colors.black),
-
-        ('LINEBEFORE',(2,1),(2,-1),2,colors.red),
-        ('LINEABOVE',(0,2),(-1,2),2,colors.green),
-
-        ('GRID',(0,1),(-1,-1),2,colors.black),
+        ('GRID',(0,0),(-1,-1),2,colors.black),
         ]
     )
     table.setStyle(ts)
@@ -727,8 +709,8 @@ def generate_report_task(request,task_id):
     )
     table = Table(data)
     style = TableStyle([
-    ('BACKGROUND', (0,0), (3,0), colors.green),
-    ('TEXTCOLOR',(0,0),(-1,0),colors.whitesmoke),
+     ('BACKGROUND', (0,0), (4,0), colors.white),
+    ('TEXTCOLOR',(0,0),(-1,0),colors.black),
 
     ('ALIGN',(0,0),(-1,-1),'CENTER'),
 
@@ -737,32 +719,16 @@ def generate_report_task(request,task_id):
 
     ('BOTTOMPADDING', (0,0), (-1,0), 12),
 
-    ('BACKGROUND',(0,1),(-1,-1),colors.beige),
     ])
     table.setStyle(style)
-
-    # 2) Alternate backgroud color
-    rowNumb = len(data)
-    for i in range(1, rowNumb):
-        if i % 2 == 0:
-            bc = colors.burlywood
-        else:
-            bc = colors.beige
-        
-        ts = TableStyle(
-            [('BACKGROUND', (0,i),(-1,i), bc)]
-        )
-        table.setStyle(ts)
 
     # 3) Add borders
     ts = TableStyle(
         [
+         
         ('BOX',(0,0),(-1,-1),2,colors.black),
-
-        ('LINEBEFORE',(2,1),(2,-1),2,colors.red),
-        ('LINEABOVE',(0,2),(-1,2),2,colors.green),
-
-        ('GRID',(0,1),(-1,-1),2,colors.black),
+        ('GRID',(0,0),(-1,-1),2,colors.black),
+        
         ]
     )
     table.setStyle(ts)
