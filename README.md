@@ -1,9 +1,12 @@
 # SOI 
 
-<p>Prvi korak je da uđemo na putanju soi/soi i u cmd-u unesemo komandu "pip install django"</p>
-<p> Drugi korak je da uđemo na putanju soi/ i u cmd-u ukucamo komandu python manage.py runserver </p>
-<p> Server CE se pokrenuti na http://127.0.0.1:8000 </p>
+<p> Download the code and install Django using: "pip install django"</p>
+<p> Start XAMPP server as well as Apache </p>
+<p> Find soi/ path in project and run python manage.py runserver (in Command Promt) </p>
+<p> Search http://127.0.0.1:8000 in browser</p>
 
 
-<p> Dodao sam ovo </p>
+<p> Choose between being Student or Proffesor  </p>
+<p> If you want to add new proffesor, you need specific permission (contact us) </p>
+
 
